@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Roadmap de Implantação — Move Giro × Tudo Mudou</title>
+  <style>
+    :root {
+      --primary:   #1a1a2e;
+      --accent:    #e94560;
+      --accent2:   #0f3460;
+      --success:   #16c79a;
+      --warning:   #f5a623;
+      --light:     #f4f6fb;
+      --mid:       #dde3f0;
+      --text:      #2d2d44;
+      --muted:     #7a7a9a;
+      --white:     #ffffff;
+      --shadow:    0 4px 24px rgba(26,26,46,.10);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--light);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent2) 100%);
+      color: var(--white);
+      padding: 48px 40px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      right: -80px; top: -80px;
+      width: 340px; height: 340px;
+      border-radius: 50%;
+      background: rgba(233,69,96,.18);
+    }
+    header .badge {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--white);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+    header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      position: relative;
+    }
+    header p {
+      font-size: .95rem;
+      opacity: .8;
+      max-width: 560px;
+      position: relative;
+    }
+    .header-meta {
+      display: flex;
+      gap: 32px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+    .header-meta .meta-item {
+      display: flex;
+      flex-direction: column;
+    }
+    .header-meta .meta-label {
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      opacity: .6;
+    }
+    .header-meta .meta-value {
+      font-size: .9rem;
+      font-weight: 600;
+    }
+
+    /* ── SUMMARY CARDS ── */
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      padding: 32px 40px 0;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .summary-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 20px 24px;
+      box-shadow: var(--shadow);
+      border-top: 4px solid var(--accent);
+      text-align: center;
+    }
+    .summary-card.green  { border-color: var(--success); }
+    .summary-card.blue   { border-color: #4a90d9; }
+    .summary-card.orange { border-color: var(--warning); }
+    .summary-card .s-number {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    .summary-card .s-label {
+      font-size: .75rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      margin-top: 4px;
+    }
+
+    /* ── MAIN CONTENT ── */
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 40px 80px;
+    }
+
+    /* ── SECTION TITLE ── */
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: var(--mid);
+      border-radius: 2px;
+    }
+
+    /* ── TIMELINE ── */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .stage {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 0 32px;
+      position: relative;
+    }
+
+    /* left column */
+    .stage-week {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      padding-top: 6px;
+      padding-bottom: 32px;
+      position: relative;
+    }
+    .stage-week::after {
+      content: '';
+      position: absolute;
+      right: -17px;
+      top: 14px;
+      bottom: 0;
+      width: 2px;
+      background: var(--mid);
+    }
+    .stage:last-child .stage-week::after { display: none; }
+
+    .week-label {
+      font-size: .75rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      text-align: right;
+    }
+    .week-range {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-align: right;
+    }
+
+    /* dot */
+    .stage-dot {
+      position: absolute;
+      right: -24px;
+      top: 10px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 3px solid var(--accent);
+      z-index: 1;
+    }
+    .stage:nth-child(2) .stage-dot { border-color: #4a90d9; }
+    .stage:nth-child(3) .stage-dot { border-color: var(--warning); }
+    .stage:nth-child(4) .stage-dot { border-color: #9b59b6; }
+    .stage:nth-child(5) .stage-dot { border-color: var(--success); }
+    .stage:nth-child(6) .stage-dot { border-color: #e67e22; }
+    .stage:nth-child(7) .stage-dot { border-color: var(--accent); }
+
+    /* right column */
+    .stage-content {
+      padding-bottom: 40px;
+    }
+
+    .stage-card {
+      background: var(--white);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .stage-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--mid);
+    }
+    .stage-icon {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .stage-header h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .stage-header p {
+      font-size: .8rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    /* color variants for icons */
+    .ic-red    { background: #fde8ec; color: var(--accent); }
+    .ic-blue   { background: #e8f0fe; color: #4a90d9; }
+    .ic-orange { background: #fff3e0; color: var(--warning); }
+    .ic-purple { background: #f3e8fd; color: #9b59b6; }
+    .ic-green  { background: #e6faf4; color: var(--success); }
+    .ic-dark   { background: #eaf0fb; color: var(--accent2); }
+
+    .stage-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    .tasks-col, .deliveries-col {
+      padding: 20px 24px;
+    }
+    .tasks-col {
+      border-right: 1px solid var(--mid);
+    }
+
+    .col-title {
+      font-size: .7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .col-title span { font-size: .85rem; }
+
+    .task-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .task-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: .855rem;
+      color: var(--text);
+    }
+    .task-list li::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--mid);
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+
+    .delivery-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .delivery-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: .855rem;
+      color: var(--text);
+    }
+    .delivery-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #e6faf4;
+      color: var(--success);
+      font-size: .7rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ── APPROVAL / HOMOLOGATION BAR ── */
+    .homolog-bar {
+      background: linear-gradient(90deg, #e6faf4 0%, #d0f5e8 100%);
+      border: 1.5px solid #a8e6ce;
+      border-radius: 12px;
+      padding: 16px 24px;
+      margin-top: -12px;
+      margin-bottom: 40px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: .875rem;
+      color: #0d7a5f;
+    }
+    .homolog-bar strong { font-weight: 700; }
+
+    /* ── ONGOING SUPPORT ── */
+    .support-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .support-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      border-left: 4px solid var(--accent2);
+    }
+    .support-card h4 {
+      font-size: .875rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--primary);
+    }
+    .support-card p {
+      font-size: .8rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* ── LEGEND ── */
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: .8rem;
+      color: var(--muted);
+    }
+    .legend-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--primary);
+      color: rgba(255,255,255,.5);
+      text-align: center;
+      padding: 24px;
+      font-size: .78rem;
+    }
+    footer strong { color: rgba(255,255,255,.85); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 700px) {
+      header, main, .summary { padding-left: 20px; padding-right: 20px; }
+      .stage { grid-template-columns: 80px 1fr; }
+      .stage-body { grid-template-columns: 1fr; }
+      .tasks-col { border-right: none; border-bottom: 1px solid var(--mid); }
+      .week-range { font-size: .95rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════ HEADER ══════════════ -->
+<header>
+  <div class="badge">Roadmap de Implantação</div>
+  <h1>Atendimento Omnichannel &amp; Automações</h1>
+  <p>Planejamento detalhado de etapas, tarefas e entregas — Move Giro Moto Peças</p>
+  <div class="header-meta">
+    <div class="meta-item">
+      <span class="meta-label">Contratante</span>
+      <span class="meta-value">Move Giro Moto Peças</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Contratada</span>
+      <span class="meta-value">Tudo Mudou Marketing e Consultoria</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Prazo total</span>
+      <span class="meta-value">6 Semanas</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Início</span>
+      <span class="meta-value">Após pagamento + acessos</span>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════════ SUMMARY CARDS ══════════════ -->
+<div class="summary">
+  <div class="summary-card">
+    <div class="s-number">7</div>
+    <div class="s-label">Etapas</div>
+  </div>
+  <div class="summary-card blue">
+    <div class="s-number">6</div>
+    <div class="s-label">Semanas</div>
+  </div>
+  <div class="summary-card green">
+    <div class="s-number">34</div>
+    <div class="s-label">Tarefas</div>
+  </div>
+  <div class="summary-card orange">
+    <div class="s-number">18</div>
+    <div class="s-label">Entregas</div>
+  </div>
+</div>
+
+<!-- ══════════════ MAIN ══════════════ -->
+<main>
+
+  <!-- Legend -->
+  <div class="legend" style="margin-top:32px;">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div> Etapa 1 · Kickoff</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#4a90d9"></div> Etapa 2 · Infraestrutura</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--warning)"></div> Etapa 3 · WhatsApp &amp; Instagram</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#9b59b6"></div> Etapa 4 · Automações</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--success)"></div> Etapa 5 · Integração Bling</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#e67e22"></div> Etapa 6 · Consultas Automáticas</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div> Etapa 7 · Homologação &amp; Go-live</div>
+  </div>
+
+  <div class="section-title">Cronograma Detalhado</div>
+
+  <!-- ══════ TIMELINE ══════ -->
+  <div class="timeline">
+
+    <!-- ── ETAPA 1 ── -->
+    <div class="stage">
+      <div class="stage-week">
+        <div class="week-label">Semana</div>
+        <div class="week-range">1</div>
+        <div class="stage-dot"></div>
+      </div>
+      <div class="stage-content">
+        <div class="stage-card">
+          <div class="stage-header">
+            <div class="stage-icon ic-red">🚀</div>
+            <div>
+              <h3>Etapa 1 — Kickoff &amp; Coleta de Acessos</h3>
+              <p>Alinhamento inicial, levantamento de requisitos e coleta de todas as credenciais necessárias</p>
+            </div>
+          </div>
+          <div class="stage-body">
+            <div class="tasks-col">
+              <div class="col-title"><span>📋</span> Tarefas</div>
+              <ul class="task-list">
+                <li>Reunião de kickoff com apresentação do roadmap e alinhamento de expectativas</li>
+                <li>Levantamento e mapeamento dos fluxos de atendimento atuais</li>
+                <li>Definição do responsável interno na Move Giro para validações</li>
+                <li>Coleta das credenciais: Meta Business Manager, conta WhatsApp Business, Instagram, Bling ERP</li>
+                <li>Coleta de acesso ao servidor/VPS ou definição de infraestrutura</li>
+                <li>Validação técnica do checklist de acessos recebidos</li>
+                <li>Confirmação do recebimento do pagamento do setup</li>
+              </ul>
+            </div>
+            <div class="deliveries-col">
+              <div class="col-title"><span>✅</span> Entregas</div>
+              <ul class="delivery-list">
+                <li><span class="delivery-tag">✓ Doc</span> Ata de reunião de kickoff assinada</li>
+                <li><span class="delivery-tag">✓ Doc</span> Checklist de acessos validado e confirmado</li>
+                <li><span class="delivery-tag">✓ Doc</span> Mapeamento dos fluxos de atendimento atuais</li>
+                <li><span class="delivery-tag">✓ Conf</span> Cronograma oficial aprovado pelas partes</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ETAPA 2 ── -->
+    <div class="stage">
+      <div class="stage-week">
+        <div class="week-label">Semanas</div>
+        <div class="week-range">1–2</div>
+        <div class="stage-dot"></div>
+      </div>
+      <div class="stage-content">
+        <div class="stage-card">
+          <div class="stage-header">
+            <div class="stage-icon ic-blue">🖥️</div>
+            <div>
+              <h3>Etapa 2 — Infraestrutura &amp; Instalação do Chatwoot</h3>
+              <p>Provisionamento do servidor, instalação e configuração base do Chatwoot</p>
+            </div>
+          </div>
+          <div class="stage-body">
+            <div class="tasks-col">
+              <div class="col-title"><span>📋</span> Tarefas</div>
+              <ul class="task-list">
+                <li>Provisionamento do servidor VPS (preferencialmente em nome da Move Giro)</li>
+                <li>Configuração do domínio e certificado SSL via Cloudflare</li>
+                <li>Instalação e deploy do Chatwoot no servidor</li>
+                <li>Configuração inicial da instância: nome, e-mail, fuso horário, idioma</li>
+                <li>Criação de caixas de entrada (inboxes) para cada canal</li>
+                <li>Criação de usuários, agentes e equipes de atendimento</li>
+                <li>Configuração de horários de funcionamento e mensagens de ausência</li>
+                <li>Teste de acesso e navegação pela interface do Chatwoot</li>
+              </ul>
+            </div>
+            <div class="deliveries-col">
+              <div class="col-title"><span>✅</span> Entregas</div>
+              <ul class="delivery-list">
+                <li><span class="delivery-tag">✓ App</span> Chatwoot instalado e acessível via domínio próprio (HTTPS)</li>
+                <li><span class="delivery-tag">✓ Conf</span> Usuários e equipes criados e testados</li>
+                <li><span class="delivery-tag">✓ Conf</span> Horários e mensagens automáticas de ausência configurados</li>
+                <li><span class="delivery-tag">✓ Doc</span> Documentação de acesso à instância entregue à Move Giro</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ETAPA 3 ── -->
+    <div class="stage">
+      <div class="stage-week">
+        <div class="week-label">Semanas</div>
+        <div class="week-range">2–3</div>
+        <div class="stage-dot"></div>
+      </div>
+      <div class="stage-content">
+        <div class="stage-card">
+          <div class="stage-header">
+            <div class="stage-icon ic-orange">💬</div>
+            <div>
+              <h3>Etapa 3 — Integração WhatsApp Business &amp; Instagram</h3>
+              <p>Conexão dos canais de mensageria ao Chatwoot via Evolution API e Meta</p>
+            </div>
+          </div>
+          <div class="stage-body">
+            <div class="tasks-col">
+              <div class="col-title"><span>📋</span> Tarefas</div>
+              <ul class="task-list">
+                <li>Instalação e configuração da Evolution API no servidor</li>
+                <li>Vinculação do número WhatsApp Business ao Evolution API</li>
+                <li>Integração do WhatsApp Business ao Chatwoot via webhook</li>
+                <li>Configuração do aplicativo Meta e permissões de acesso ao Instagram</li>
+                <li>Integração do Instagram Direct ao Chatwoot</li>
+                <li>Testes de envio e recebimento em ambos os canais (texto, imagem, áudio)</li>
+                <li>Validação de notificações em tempo real para agentes</li>
+              </ul>
+            </div>
+            <div class="deliveries-col">
+              <div class="col-title"><span>✅</span> Entregas</div>
+              <ul class="delivery-list">
+                <li><span class="delivery-tag">✓ Canal</span> WhatsApp Business ativo e recebendo mensagens no Chatwoot</li>
+                <li><span class="delivery-tag">✓ Canal</span> Instagram Direct ativo e integrado ao Chatwoot</li>
+                <li><span class="delivery-tag">✓ Teste</span> Evidências de testes de envio/recebimento aprovadas</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ETAPA 4 ── -->
+    <div class="stage">
+      <div class="stage-week">
+        <div class="week-label">Semanas</div>
+        <div class="week-range">3–4</div>
+        <div class="stage-dot"></div>
+      </div>
+      <div class="stage-content">
+        <div class="stage-card">
+          <div class="stage-header">
+            <div class="stage-icon ic-purple">⚙️</div>
+            <div>
+              <h3>Etapa 4 — Configuração de Automações Iniciais</h3>
+              <p>Criação de fluxos automáticos de triagem, boas-vindas e roteamento de conversas</p>
+            </div>
+          </div>
+          <div class="stage-body">
+            <div class="tasks-col">
+              <div class="col-title"><span>📋</span> Tarefas</div>
+              <ul class="task-list">
+                <li>Definição e aprovação dos fluxos de atendimento com a Move Giro</li>
+                <li>Criação de mensagens de boas-vindas automáticas (WhatsApp e Instagram)</li>
+                <li>Configuração de menu inicial de triagem (opções por tipo de atendimento)</li>
+                <li>Regras de roteamento automático de conversas para equipes/agentes</li>
+                <li>Criação de rótulos (labels) e categorias de conversas</li>
+                <li>Configuração de notificações automáticas de status</li>
+                <li>Testes e ajustes dos fluxos com a equipe da Move Giro</li>
+              </ul>
+            </div>
+            <div class="deliveries-col">
+              <div class="col-title"><span>✅</span> Entregas</div>
+              <ul class="delivery-list">
+                <li><span class="delivery-tag">✓ Auto</span> Fluxo de boas-vindas ativo em todos os canais</li>
+                <li><span class="delivery-tag">✓ Auto</span> Menu de triagem configurado e testado</li>
+                <li><span class="delivery-tag">✓ Auto</span> Roteamento automático para equipes operacional</li>
+                <li><span class="delivery-tag">✓ Doc</span> Documento de fluxos aprovado pela Move Giro</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ETAPA 5 ── -->
+    <div class="stage">
+      <div class="stage-week">
+        <div class="week-label">Semanas</div>
+        <div class="week-range">4–5</div>
+        <div class="stage-dot"></div>
+      </div>
+      <div class="stage-content">
+        <div class="stage-card">
+          <div class="stage-header">
+            <div class="stage-icon ic-green">🔗</div>
+            <div>
+              <h3>Etapa 5 — Integração Inicial com ERP Bling</h3>
+              <p>Conexão do Bling ao ecossistema para acesso a dados de pedidos, estoque e clientes</p>
+            </div>
+          </div>
+          <div class="stage-body">
+            <div class="tasks-col">
+              <div class="col-title"><span>📋</span> Tarefas</div>
+              <ul class="task-list">
+                <li>Análise da API do Bling e definição dos endpoints a serem utilizados</li>
+                <li>Geração e configuração das credenciais de API do Bling</li>
+                <li>Desenvolvimento/configuração da camada de integração (webhook ou polling)</li>
+                <li>Mapeamento dos dados relevantes: pedidos, status, clientes, estoque</li>
+                <li>Configuração da integração no ambiente Chatwoot/automação</li>
+                <li>Testes de consultas via integração (busca de pedido por número, status de entrega)</li>
+                <li>Validação dos dados retornados com equipe da Move Giro</li>
+              </ul>
+            </div>
+            <div class="deliveries-col">
+              <div class="col-title"><span>✅</span> Entregas</div>
+              <ul class="delivery-list">
+                <li><span class="delivery-tag">✓ Int</span> Integração Bling ↔ plataforma funcional e testada</li>
+                <li><span class="delivery-tag">✓ Conf</span> Endpoints de pedidos, clientes e estoque configurados</li>
+                <li><span class="delivery-tag">✓ Teste</span> Relatório de testes de consulta aprovado</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ETAPA 6 ── -->
+    <div class="stage">
+      <div class="stage-week">
+        <div class="week-label">Semana</div>
+        <div class="week-range">5</div>
+        <div class="stage-dot"></div>
+      </div>
+      <div class="stage-content">
+        <div class="stage-card">
+          <div class="stage-header">
+            <div class="stage-icon ic-dark">🤖</div>
+            <div>
+              <h3>Etapa 6 — Configuração de Consultas Automatizadas</h3>
+              <p>Criação de respostas automáticas que consomem dados do Bling em tempo real via chat</p>
+            </div>
+          </div>
+          <div class="stage-body">
+            <div class="tasks-col">
+              <div class="col-title"><span>📋</span> Tarefas</div>
+              <ul class="task-list">
+                <li>Definição dos tipos de consulta automatizável (status de pedido, prazo, etc.)</li>
+                <li>Criação de bot de consulta de pedidos via WhatsApp (CPF/número do pedido)</li>
+                <li>Configuração de respostas dinâmicas com dados retornados do Bling</li>
+                <li>Configuração de fallback para atendente humano quando necessário</li>
+                <li>Testes de ponta a ponta: cliente envia CPF → bot retorna status do pedido</li>
+                <li>Ajustes de mensagens e tratamento de erros/dados não encontrados</li>
+              </ul>
+            </div>
+            <div class="deliveries-col">
+              <div class="col-title"><span>✅</span> Entregas</div>
+              <ul class="delivery-list">
+                <li><span class="delivery-tag">✓ Bot</span> Consulta automatizada de pedidos via WhatsApp operacional</li>
+                <li><span class="delivery-tag">✓ Auto</span> Fallback para atendente humano configurado</li>
+                <li><span class="delivery-tag">✓ Teste</span> Testes de fluxo completo aprovados pela Move Giro</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ETAPA 7 ── -->
+    <div class="stage">
+      <div class="stage-week">
+        <div class="week-label">Semana</div>
+        <div class="week-range">6</div>
+        <div class="stage-dot"></div>
+      </div>
+      <div class="stage-content">
+        <div class="stage-card">
+          <div class="stage-header">
+            <div class="stage-icon ic-red">🏁</div>
+            <div>
+              <h3>Etapa 7 — Testes Finais, Homologação &amp; Go-live</h3>
+              <p>Validação completa do ambiente, treinamento da equipe e entrega formal da solução</p>
+            </div>
+          </div>
+          <div class="stage-body">
+            <div class="tasks-col">
+              <div class="col-title"><span>📋</span> Tarefas</div>
+              <ul class="task-list">
+                <li>Execução dos testes integrados de ponta a ponta em todos os canais</li>
+                <li>Correção de bugs e ajustes identificados nos testes</li>
+                <li>Treinamento básico da equipe operacional da Move Giro</li>
+                <li>Entrega da documentação operacional mínima</li>
+                <li>Abertura do período formal de homologação (até 10 dias úteis)</li>
+                <li>Suporte intensivo durante período de homologação</li>
+                <li>Assinatura do Termo de Homologação e go-live oficial</li>
+              </ul>
+            </div>
+            <div class="deliveries-col">
+              <div class="col-title"><span>✅</span> Entregas</div>
+              <ul class="delivery-list">
+                <li><span class="delivery-tag">✓ Doc</span> Documentação operacional mínima entregue</li>
+                <li><span class="delivery-tag">✓ Treino</span> Treinamento básico realizado com a equipe</li>
+                <li><span class="delivery-tag">✓ Termo</span> Termo de Homologação assinado</li>
+                <li><span class="delivery-tag">✓ Live</span> Ambiente em produção — Go-live oficial</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /timeline -->
+
+  <!-- ══ HOMOLOGATION NOTE ══ -->
+  <div class="homolog-bar">
+    <span style="font-size:1.4rem">⏱️</span>
+    <div>
+      <strong>Período de Homologação:</strong> após a conclusão da Etapa 7, a Move Giro terá até <strong>10 (dez) dias úteis</strong> para validar formalmente o ambiente e assinar o Termo de Homologação, conforme Cláusula 8 do contrato. A vigência de 12 meses inicia-se a partir da data de homologação.
+    </div>
+  </div>
+
+  <!-- ══ SUPORTE PÓS-IMPLANTAÇÃO ══ -->
+  <div class="section-title">Suporte Contínuo Pós Go-live</div>
+  <div class="support-grid">
+    <div class="support-card">
+      <h4>🕐 Horário de Atendimento</h4>
+      <p>Segunda a sexta-feira, das <strong>09h às 18h</strong> (horário comercial). Solicitações fora deste horário serão atendidas no próximo dia útil.</p>
+    </div>
+    <div class="support-card">
+      <h4>🔴 Incidentes Críticos</h4>
+      <p>Prazo inicial de resposta de até <strong>24 horas úteis</strong>. Podendo ser prorrogado em caso de dependência de terceiros (Meta, WhatsApp, Bling).</p>
+    </div>
+    <div class="support-card">
+      <h4>💬 Dúvidas Operacionais</h4>
+      <p>Prazo inicial de atendimento de até <strong>48 horas úteis</strong>. Demandas evolutivas e novas funcionalidades não estão inclusas e são orçadas separadamente.</p>
+    </div>
+    <div class="support-card">
+      <h4>📦 Escopo do Suporte</h4>
+      <p>Suporte <strong>corretivo</strong> limitado ao escopo implantado. Qualquer expansão, nova integração ou customização requer novo orçamento e aprovação.</p>
+    </div>
+  </div>
+
+  <!-- ══ DEPENDENCIES NOTE ══ -->
+  <div style="margin-top:32px; padding:20px 24px; background:#fffbeb; border:1.5px solid #fde68a; border-radius:12px; font-size:.855rem; color:#92400e; line-height:1.7;">
+    <strong>⚠️ Dependências para início da implantação:</strong> O cronograma de 6 semanas inicia-se apenas após (a) confirmação do pagamento do setup de R$ 1.650,00; (b) entrega integral dos acessos listados no checklist da Etapa 1; (c) disponibilização das credenciais necessárias. Os custos de infraestrutura terceira (VPS, OpenAI, WhatsApp API, Meta, Evolution API, Cloudflare) são de responsabilidade exclusiva da Move Giro Moto Peças.
+  </div>
+
+</main>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer>
+  <strong>Tudo Mudou Marketing e Consultoria LTDA</strong> — CNPJ 40.790.711/0001-21 · Osasco/SP<br/>
+  Documento vinculado ao Contrato de Licença de Uso, Automação e Suporte Tecnológico firmado com Move Giro Moto Peças (CNPJ 53.180.510/0001-54)
+</footer>
+
+</body>
+</html>
