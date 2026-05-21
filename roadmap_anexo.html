@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anexo I — Roadmap de Implantação — Medicina Cursos × Tudo Mudou!</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 11pt;
+      line-height: 1.6;
+      color: #000000;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+    .page {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 60px 70px;
+    }
+    h1.titulo-principal {
+      font-size: 13pt;
+      font-weight: bold;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+      margin-top: 0;
+    }
+    h1.subtitulo {
+      font-size: 11pt;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 4px;
+    }
+    .ref-line {
+      text-align: center;
+      font-size: 10pt;
+      color: #333;
+      margin-bottom: 6px;
+    }
+    .divider {
+      border: none;
+      border-top: 2px solid #000;
+      margin: 20px 0;
+    }
+    .divider-thin {
+      border: none;
+      border-top: 1px solid #000;
+      margin: 14px 0;
+    }
+    p {
+      margin: 6px 0 10px 0;
+      text-align: justify;
+    }
+    .partes-bloco {
+      margin: 16px 0;
+      font-size: 10.5pt;
+    }
+    .partes-bloco p {
+      margin: 4px 0;
+    }
+    .negrito {
+      font-weight: bold;
+    }
+    h2.secao {
+      font-size: 11pt;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-top: 26px;
+      margin-bottom: 8px;
+      page-break-after: avoid;
+    }
+
+    /* FASE CARDS */
+    .fase {
+      border: 1px solid #000;
+      margin-bottom: 28px;
+      page-break-inside: avoid;
+    }
+    .fase-header {
+      background-color: #000;
+      color: #fff;
+      padding: 8px 14px;
+    }
+    .fase-header-title {
+      font-size: 12pt;
+      font-weight: bold;
+      margin: 0;
+    }
+    .fase-header-sub {
+      font-size: 10pt;
+      font-weight: normal;
+      margin: 0;
+    }
+    .fase-body {
+      padding: 14px 16px;
+    }
+    .fase-grid {
+      display: table;
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .fase-col {
+      display: table-cell;
+      vertical-align: top;
+      padding: 0 10px 0 0;
+      width: 33%;
+    }
+    .fase-col:last-child {
+      padding-right: 0;
+    }
+    .fase-col-label {
+      font-size: 9.5pt;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      border-bottom: 1px solid #000;
+      margin-bottom: 6px;
+      padding-bottom: 3px;
+    }
+    .fase-col ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+    .fase-col ul li {
+      font-size: 10pt;
+      margin-bottom: 4px;
+      text-align: left;
+    }
+    .fase-col p {
+      font-size: 10pt;
+      margin: 0 0 4px 0;
+    }
+    .deliverable-item {
+      font-size: 10pt;
+      margin-bottom: 4px;
+      padding-left: 0;
+    }
+    .deliverable-item::before {
+      content: "✓ ";
+      font-weight: bold;
+    }
+
+    /* TIMELINE BAR */
+    .timeline {
+      display: table;
+      width: 100%;
+      margin: 20px 0;
+      border-collapse: collapse;
+    }
+    .timeline-row {
+      display: table-row;
+    }
+    .timeline-label {
+      display: table-cell;
+      font-size: 10pt;
+      font-weight: bold;
+      padding: 6px 10px 6px 0;
+      white-space: nowrap;
+      vertical-align: middle;
+      width: 120px;
+    }
+    .timeline-bar-cell {
+      display: table-cell;
+      vertical-align: middle;
+      padding: 4px 0;
+    }
+    .bar-outer {
+      width: 100%;
+      background: #e0e0e0;
+      height: 18px;
+    }
+    .bar-inner {
+      height: 18px;
+      background: #000;
+      display: inline-block;
+      vertical-align: top;
+    }
+    .bar-text {
+      font-size: 9pt;
+      color: #555;
+      padding-left: 6px;
+      vertical-align: middle;
+    }
+
+    /* DEPENDENCIAS */
+    .box-nota {
+      border: 1px solid #000;
+      padding: 10px 14px;
+      margin: 18px 0;
+      font-size: 10.5pt;
+    }
+    .box-nota-titulo {
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    /* SUPORTE */
+    .suporte-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0;
+      font-size: 10pt;
+    }
+    .suporte-table th {
+      background: #000;
+      color: #fff;
+      padding: 6px 10px;
+      text-align: left;
+      font-size: 10pt;
+    }
+    .suporte-table td {
+      border: 1px solid #ccc;
+      padding: 6px 10px;
+      vertical-align: top;
+    }
+    .suporte-table tr:nth-child(even) td {
+      background-color: #f7f7f7;
+    }
+
+    /* ASSINATURAS */
+    .assinaturas {
+      margin-top: 50px;
+      page-break-inside: avoid;
+    }
+    .assinaturas-grid {
+      display: table;
+      width: 100%;
+      margin-top: 40px;
+    }
+    .assinatura-col {
+      display: table-cell;
+      width: 45%;
+      vertical-align: top;
+      padding: 0 10px;
+    }
+    .assinatura-col:first-child {
+      padding-left: 0;
+    }
+    .assinatura-col:last-child {
+      padding-right: 0;
+      text-align: right;
+    }
+    .linha-assinatura {
+      border-top: 1px solid #000;
+      margin-top: 50px;
+      padding-top: 6px;
+      font-size: 10pt;
+    }
+    .data-assinatura {
+      margin-top: 30px;
+      text-align: center;
+    }
+    .footer {
+      margin-top: 50px;
+      border-top: 1px solid #000;
+      padding-top: 8px;
+      font-size: 9pt;
+      color: #333;
+      text-align: center;
+    }
+    ul.lista-simples {
+      margin: 6px 0 10px 22px;
+      padding: 0;
+    }
+    ul.lista-simples li {
+      margin-bottom: 5px;
+      text-align: justify;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- CABEÇALHO -->
+  <h1 class="titulo-principal">Anexo I — Roadmap de Implantação</h1>
+  <h1 class="subtitulo">Contrato de Prestação de Serviços de Tecnologia, IA e Automação</h1>
+  <p class="ref-line">Proposta Comercial 003/2026 &nbsp;|&nbsp; Medicina Cursos × Tudo Mudou! &nbsp;|&nbsp; 14.05.2026</p>
+  <hr class="divider">
+
+  <!-- IDENTIFICAÇÃO DAS PARTES -->
+  <div class="partes-bloco">
+    <p><span class="negrito">Contratante:</span> Medicina Cursos — CNPJ: [CNPJ DA CONTRATANTE]</p>
+    <p><span class="negrito">Contratada:</span> Tudo Mudou Marketing e Consultoria LTDA — CNPJ: 40.790.711/0001-21</p>
+    <p><span class="negrito">Data de referência:</span> 14 de maio de 2026</p>
+    <p><span class="negrito">Prazo total previsto:</span> 6 (seis) semanas a partir do aceite + entrega dos acessos</p>
+  </div>
+
+  <hr class="divider-thin">
+
+  <!-- INTRODUÇÃO -->
+  <h2 class="secao">1. Finalidade deste Anexo</h2>
+  <p>O presente Anexo I integra o Contrato de Prestação de Serviços de Tecnologia, IA e Automação firmado entre as Partes e tem por finalidade detalhar o cronograma de implantação das soluções contratadas, especificando as fases, semanas, objetivos, tarefas e entregáveis de cada etapa do projeto.</p>
+  <p>O roadmap é estruturado em <span class="negrito">3 (três) fases sequenciais</span>, com duração total de até 6 (seis) semanas a partir do kickoff, o qual somente será iniciado após: (i) assinatura do contrato; (ii) pagamento da primeira parcela do setup; e (iii) entrega pela CONTRATANTE de todos os acessos e credenciais necessários, conforme checklist a ser fornecido pela CONTRATADA.</p>
+  <p>O cumprimento dos prazos previstos depende da colaboração ativa da CONTRATANTE, especialmente no que se refere à entrega tempestiva de acessos, validações e aprovações. Atrasos de responsabilidade da CONTRATANTE implicarão prorrogação proporcional dos prazos, sem ônus para a CONTRATADA.</p>
+
+  <!-- VISÃO GERAL DO CRONOGRAMA -->
+  <h2 class="secao">2. Visão Geral do Cronograma</h2>
+
+  <div class="timeline">
+    <div class="timeline-row">
+      <div class="timeline-label">Fase 01</div>
+      <div class="timeline-bar-cell">
+        <div class="bar-outer">
+          <div class="bar-inner" style="width:33%;"></div>
+        </div>
+        <span class="bar-text">Semanas 1–2 &nbsp;·&nbsp; Discovery &amp; Modelagem</span>
+      </div>
+    </div>
+    <div class="timeline-row">
+      <div class="timeline-label">Fase 02</div>
+      <div class="timeline-bar-cell">
+        <div class="bar-outer">
+          <div class="bar-inner" style="width:33%; margin-left:33%;"></div>
+        </div>
+        <span class="bar-text">Semanas 3–4 &nbsp;·&nbsp; Chatwoot &amp; IA</span>
+      </div>
+    </div>
+    <div class="timeline-row">
+      <div class="timeline-label">Fase 03</div>
+      <div class="timeline-bar-cell">
+        <div class="bar-outer">
+          <div class="bar-inner" style="width:33%; margin-left:66%;"></div>
+        </div>
+        <span class="bar-text">Semanas 5–6 &nbsp;·&nbsp; SDR IA + Go-live</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FASE 01 -->
+  <h2 class="secao">3. Detalhamento das Fases</h2>
+
+  <div class="fase">
+    <div class="fase-header">
+      <p class="fase-header-title">Fase 01 — Discovery &amp; Modelagem</p>
+      <p class="fase-header-sub">Semanas 1 e 2 · Levantamento, mapeamento e definição de escopo operacional</p>
+    </div>
+    <div class="fase-body">
+      <p><span class="negrito">Objetivo:</span> Compreender profundamente a operação da CONTRATANTE, mapear os canais de comunicação ativos, levantar o portfólio de cursos e pós-graduações, coletar acessos e credenciais, e definir o tom de voz e as personas da IA antes de qualquer desenvolvimento técnico.</p>
+
+      <div class="fase-grid">
+        <div class="fase-col">
+          <div class="fase-col-label">Tarefas</div>
+          <ul>
+            <li>Kickoff meeting com equipe da CONTRATANTE e CONTRATADA para alinhamento de expectativas, papéis e responsabilidades</li>
+            <li>Mapeamento dos canais de comunicação ativos: WhatsApp Business, Instagram Direct e Webchat (URL do site, plugin ou integração existente)</li>
+            <li>Levantamento do portfólio completo de cursos e pós-graduações: nome, duração, modalidade, público-alvo, valor, prazo de inscrição e processo seletivo</li>
+            <li>Mapeamento do processo comercial atual: jornada do lead desde o primeiro contato até a matrícula</li>
+            <li>Definição do tom de voz da IA: linguagem, formalidade, personalidade, limites do bot e critérios de escalonamento humano</li>
+            <li>Definição das personas atendidas: perfil de aluno típico, dúvidas frequentes, objeções comuns</li>
+            <li>Coleta de acessos e credenciais: conta Meta Business, WhatsApp Business API, acesso ao site, conta de e-mail para configuração de plataformas</li>
+            <li>Validação do checklist de acessos com ponto focal da CONTRATANTE</li>
+            <li>Elaboração da ata de kickoff e checklist de acessos validado</li>
+          </ul>
+        </div>
+        <div class="fase-col">
+          <div class="fase-col-label">Responsabilidades</div>
+          <ul>
+            <li><span class="negrito">CONTRATADA:</span> conduzir reuniões, elaborar checklist, documentar levantamentos e validar informações</li>
+            <li><span class="negrito">CONTRATANTE:</span> participar das reuniões, designar ponto focal, fornecer todos os dados de cursos e processos, disponibilizar acessos no prazo acordado</li>
+          </ul>
+          <br>
+          <div class="fase-col-label">Stack Envolvida</div>
+          <ul>
+            <li>Google Meet / Zoom (reuniões)</li>
+            <li>Notion ou Google Docs (documentação)</li>
+            <li>Meta Business Suite (validação de acesso)</li>
+          </ul>
+        </div>
+        <div class="fase-col">
+          <div class="fase-col-label">Entregáveis</div>
+          <div class="deliverable-item">Ata de kickoff assinada</div>
+          <div class="deliverable-item">Checklist de acessos validado</div>
+          <div class="deliverable-item">Documento de mapeamento dos canais ativos</div>
+          <div class="deliverable-item">Portfólio de cursos estruturado (base para treinamento da IA)</div>
+          <div class="deliverable-item">Documento de tom de voz e personas da IA aprovado pela CONTRATANTE</div>
+          <div class="deliverable-item">Mapa da jornada do lead (as-is)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FASE 02 -->
+  <div class="fase">
+    <div class="fase-header">
+      <p class="fase-header-title">Fase 02 — Chatwoot &amp; IA</p>
+      <p class="fase-header-sub">Semanas 3 e 4 · Setup técnico, integração de canais e treinamento da inteligência artificial</p>
+    </div>
+    <div class="fase-body">
+      <p><span class="negrito">Objetivo:</span> Provisionar e configurar toda a infraestrutura técnica da solução omnichannel, integrar os canais de comunicação ao Chatwoot, desenvolver e treinar o agente de IA com a base de conhecimento da CONTRATANTE, e configurar os fluxos de triagem automática e escalonamento humano.</p>
+
+      <div class="fase-grid">
+        <div class="fase-col">
+          <div class="fase-col-label">Tarefas</div>
+          <ul>
+            <li>Provisionamento do VPS fornecido pela CONTRATANTE conforme especificações mínimas (RAM, CPU, armazenamento e sistema operacional)</li>
+            <li>Instalação e configuração da plataforma Chatwoot em modo self-hosted via Docker</li>
+            <li>Configuração de domínio e SSL para acesso seguro ao Chatwoot</li>
+            <li>Integração do WhatsApp Business via Evolution API: pareamento do número, configuração de webhooks e testes de envio e recebimento</li>
+            <li>Integração do Instagram Direct à caixa de entrada do Chatwoot via API Meta</li>
+            <li>Configuração do Webchat e geração do script de instalação para o site da CONTRATANTE</li>
+            <li>Desenvolvimento da base de conhecimento da IA com os dados levantados na Fase 01 (cursos, pós-graduações, inscrições, prazos, perguntas frequentes)</li>
+            <li>Treinamento e ajuste fino do agente de IA (prompt engineering) para atendimento alinhado ao tom de voz definido</li>
+            <li>Configuração dos fluxos de triagem automática: classificação de intenção do usuário, respostas automáticas e roteamento por canal</li>
+            <li>Configuração das regras de escalonamento para atendimento humano: palavras-chave críticas, solicitação explícita do usuário e fallback por falha de resposta</li>
+            <li>Configuração de caixas de entrada, equipes e agentes humanos no Chatwoot</li>
+            <li>Testes funcionais por canal: WhatsApp, Instagram e Webchat</li>
+            <li>Correções e ajustes com base nos resultados dos testes</li>
+          </ul>
+        </div>
+        <div class="fase-col">
+          <div class="fase-col-label">Responsabilidades</div>
+          <ul>
+            <li><span class="negrito">CONTRATADA:</span> toda a execução técnica de instalação, integração e treinamento da IA</li>
+            <li><span class="negrito">CONTRATANTE:</span> disponibilizar VPS provisionado, validar instalação do script de Webchat no site, participar dos testes por canal e aprovar a configuração dos fluxos</li>
+          </ul>
+          <br>
+          <div class="fase-col-label">Stack Envolvida</div>
+          <ul>
+            <li>Chatwoot (plataforma omnichannel)</li>
+            <li>Evolution API (integração WhatsApp)</li>
+            <li>Meta Graph API (Instagram Direct)</li>
+            <li>Claude / GPT (LLM para atendente IA)</li>
+            <li>Docker / VPS Linux</li>
+            <li>Nginx + SSL (Let's Encrypt)</li>
+          </ul>
+        </div>
+        <div class="fase-col">
+          <div class="fase-col-label">Entregáveis</div>
+          <div class="deliverable-item">Chatwoot instalado e acessível via domínio seguro</div>
+          <div class="deliverable-item">WhatsApp Business integrado e operacional</div>
+          <div class="deliverable-item">Instagram Direct integrado e operacional</div>
+          <div class="deliverable-item">Webchat ativo no site da CONTRATANTE</div>
+          <div class="deliverable-item">Agente de IA treinado e respondendo nos três canais</div>
+          <div class="deliverable-item">Fluxo de triagem automática configurado e validado</div>
+          <div class="deliverable-item">Escalonamento humano funcionando corretamente</div>
+          <div class="deliverable-item">Relatório de testes por canal (aprovação da CONTRATANTE)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FASE 03 -->
+  <div class="fase">
+    <div class="fase-header">
+      <p class="fase-header-title">Fase 03 — SDR IA + Go-live</p>
+      <p class="fase-header-sub">Semanas 5 e 6 · Ativação do SDR por IA, testes integrados e entrega em produção</p>
+    </div>
+    <div class="fase-body">
+      <p><span class="negrito">Objetivo:</span> Configurar e ativar o agente SDR por inteligência artificial, desenvolver os fluxos de qualificação de leads e handoff para o time comercial, realizar testes integrados ponta a ponta, treinar formalmente a equipe da CONTRATANTE e entregar toda a operação em produção mediante assinatura do Termo de Homologação.</p>
+
+      <div class="fase-grid">
+        <div class="fase-col">
+          <div class="fase-col-label">Tarefas</div>
+          <ul>
+            <li>Configuração do N8N como orquestrador dos fluxos de automação do SDR</li>
+            <li>Integração do N8N com o LLM selecionado (Claude / GPT) para processamento de linguagem natural nas etapas de qualificação</li>
+            <li>Criação dos fluxos de qualificação de leads: abordagem proativa, perguntas de qualificação (curso de interesse, modalidade, disponibilidade, urgência e perfil profissional), e coleta estruturada das respostas</li>
+            <li>Configuração da coleta automatizada de dados de intenção de matrícula: integração com planilha ou CRM designado pela CONTRATANTE para armazenamento dos dados qualificados</li>
+            <li>Configuração do handoff para o time comercial: notificação automática com resumo da conversa, dados do lead e intenção identificada, entregues via canal definido com a CONTRATANTE (WhatsApp, e-mail ou CRM)</li>
+            <li>Testes integrados ponta a ponta: simulação de jornadas completas do lead desde o primeiro contato até o handoff comercial</li>
+            <li>Ajustes e refinamentos nos fluxos com base nos resultados dos testes integrados</li>
+            <li>Treinamento formal da equipe da CONTRATANTE: uso do Chatwoot, gerenciamento da caixa de entrada, interpretação dos leads qualificados pelo SDR e operação básica das ferramentas</li>
+            <li>Documentação operacional: manual básico de uso e guia de perguntas frequentes para a equipe</li>
+            <li>Go-live: ativação completa da solução em ambiente de produção</li>
+            <li>Monitoramento assistido nas primeiras 48 horas após go-live</li>
+            <li>Assinatura do Termo de Homologação pelas Partes</li>
+          </ul>
+        </div>
+        <div class="fase-col">
+          <div class="fase-col-label">Responsabilidades</div>
+          <ul>
+            <li><span class="negrito">CONTRATADA:</span> configuração técnica completa do SDR, realização dos testes, condução do treinamento e elaboração da documentação</li>
+            <li><span class="negrito">CONTRATANTE:</span> participar dos testes como usuário final, indicar o CRM ou planilha de destino dos leads, participar do treinamento, monitorar o go-live e assinar o Termo de Homologação</li>
+          </ul>
+          <br>
+          <div class="fase-col-label">Stack Envolvida</div>
+          <ul>
+            <li>N8N (orquestração de fluxos)</li>
+            <li>Claude / GPT via API (LLM do SDR)</li>
+            <li>Chatwoot (canal de entrada)</li>
+            <li>Evolution API (WhatsApp)</li>
+            <li>Google Sheets / CRM da CONTRATANTE</li>
+            <li>Docker / VPS Linux</li>
+          </ul>
+        </div>
+        <div class="fase-col">
+          <div class="fase-col-label">Entregáveis</div>
+          <div class="deliverable-item">SDR por IA ativo e qualificando leads automaticamente</div>
+          <div class="deliverable-item">Fluxo de coleta de dados de intenção de matrícula operacional</div>
+          <div class="deliverable-item">Handoff para time comercial configurado e testado</div>
+          <div class="deliverable-item">Relatório de testes ponta a ponta aprovado</div>
+          <div class="deliverable-item">Equipe treinada e operando as ferramentas</div>
+          <div class="deliverable-item">Manual operacional básico entregue</div>
+          <div class="deliverable-item">Solução em produção (go-live)</div>
+          <div class="deliverable-item">Termo de Homologação assinado pelas Partes</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEPENDÊNCIAS -->
+  <h2 class="secao">4. Pré-requisitos e Dependências Críticas</h2>
+
+  <div class="box-nota">
+    <p class="box-nota-titulo">Condições necessárias para início do projeto (kickoff)</p>
+    <ul class="lista-simples">
+      <li><span class="negrito">Assinatura do contrato</span> por ambas as Partes;</li>
+      <li><span class="negrito">Pagamento da primeira parcela</span> do setup (R$ 3.400,00) confirmado via PIX;</li>
+      <li><span class="negrito">Entrega dos acessos e credenciais</span> listados no checklist a ser fornecido pela CONTRATADA, incluindo no mínimo: acesso ao Meta Business Manager, número de WhatsApp Business elegível para API, acesso de administrador ao site (para instalação do Webchat), e servidor VPS provisionado conforme especificações.</li>
+    </ul>
+  </div>
+
+  <div class="box-nota">
+    <p class="box-nota-titulo">Impactos em caso de atraso da CONTRATANTE</p>
+    <ul class="lista-simples">
+      <li>Cada semana de atraso na entrega de acessos ou validações de responsabilidade da CONTRATANTE resultará em prorrogação proporcional do prazo de entrega, sem ônus para a CONTRATADA;</li>
+      <li>Atrasos superiores a 2 (duas) semanas poderão impactar a disponibilidade da equipe técnica da CONTRATADA e demandar renegociação do cronograma;</li>
+      <li>A mensalidade será devida a partir do 3.º mês de vigência contratual, independentemente de eventual atraso no go-live atribuível à CONTRATANTE.</li>
+    </ul>
+  </div>
+
+  <!-- SUPORTE PÓS GO-LIVE -->
+  <h2 class="secao">5. Suporte Pós Go-live</h2>
+  <p>Após a assinatura do Termo de Homologação e ativação do go-live, a CONTRATADA manterá os seguintes serviços continuados durante toda a vigência do contrato:</p>
+
+  <table class="suporte-table">
+    <tr>
+      <th>Serviço</th>
+      <th>Descrição</th>
+      <th>Periodicidade / SLA</th>
+    </tr>
+    <tr>
+      <td><strong>Manutenção do Atendente IA</strong></td>
+      <td>Monitoramento e ajustes no agente de IA com base em novas conversas, atualizações de portfólio e feedbacks da equipe</td>
+      <td>Contínua, sob demanda (até 5 dias úteis para ajustes solicitados)</td>
+    </tr>
+    <tr>
+      <td><strong>Refinamentos do SDR</strong></td>
+      <td>Otimização dos fluxos de qualificação e handoff com base em dados reais de atendimento e conversão</td>
+      <td>Mensal ou sob demanda</td>
+    </tr>
+    <tr>
+      <td><strong>Suporte Técnico aos Canais</strong></td>
+      <td>Atendimento a incidentes técnicos nos canais integrados (WhatsApp, Instagram, Webchat)</td>
+      <td>Seg–Sex, 9h–18h; resposta em até 4h úteis (críticos) ou 24h úteis (demais)</td>
+    </tr>
+    <tr>
+      <td><strong>Consultoria Estratégica</strong></td>
+      <td>Reuniões periódicas de análise de performance, sugestões de melhorias e alinhamento estratégico</td>
+      <td>Mensal (1 reunião/mês, mediante agendamento)</td>
+    </tr>
+    <tr>
+      <td><strong>Atualizações de Base de Conhecimento</strong></td>
+      <td>Atualização da base da IA com novos cursos, pós-graduações e informações de inscrição fornecidas pela CONTRATANTE</td>
+      <td>Sob demanda (até 5 dias úteis após envio das informações)</td>
+    </tr>
+  </table>
+
+  <p>Os serviços listados acima estão incluídos na mensalidade contratada, observados os limites de uso razoável definidos na Cláusula 12 do contrato principal. Demandas fora do escopo ou em volume extraordinário serão orçadas separadamente.</p>
+
+  <!-- DATA E LOCAL -->
+  <div class="data-assinatura">
+    <p>Osasco/SP, _____ de ________________ de 2026.</p>
+    <p style="font-size:10pt; color:#333;">Este Anexo I integra o Contrato de Prestação de Serviços de Tecnologia, IA e Automação — Proposta 003/2026.</p>
+  </div>
+
+  <!-- ASSINATURAS -->
+  <div class="assinaturas">
+    <div class="assinaturas-grid">
+      <div class="assinatura-col">
+        <div class="linha-assinatura">
+          <strong>CONTRATANTE</strong><br>
+          Medicina Cursos<br>
+          CNPJ: [CNPJ DA CONTRATANTE]<br>
+          Nome: ________________________________<br>
+          Cargo: ________________________________
+        </div>
+      </div>
+      <div class="assinatura-col">
+        <div class="linha-assinatura">
+          <strong>CONTRATADA</strong><br>
+          Tudo Mudou Marketing e Consultoria LTDA<br>
+          CNPJ: 40.790.711/0001-21<br>
+          Nome: ________________________________<br>
+          Cargo: ________________________________
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RODAPÉ -->
+  <div class="footer">
+    Anexo I — Roadmap de Implantação &nbsp;|&nbsp; Proposta 003/2026 &nbsp;|&nbsp; Medicina Cursos × Tudo Mudou Marketing e Consultoria LTDA &nbsp;|&nbsp; CNPJ Contratada: 40.790.711/0001-21
+  </div>
+
+</div>
+</body>
+</html>
