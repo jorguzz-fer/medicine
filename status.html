@@ -1,3 +1,8 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Implantação Medicine</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style id="css">
@@ -141,11 +146,18 @@ footer{margin:46px 0 30px; padding-top:16px; border-top:1px solid var(--line);
   font-family:'IBM Plex Mono',monospace}
 .saving.on{opacity:.94}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.tools{display:flex; gap:9px; margin-top:22px; flex-wrap:wrap; position:relative; z-index:1}
+button.tool{font:inherit; font-size:.82rem; font-weight:600; cursor:pointer; border-radius:8px;
+  padding:8px 14px; border:1px solid var(--line); background:var(--surface); color:var(--ink)}
+button.tool:hover{border-color:var(--accent); color:var(--accent)}
+button.tool:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
 @media (max-width:640px){
   .row{grid-template-columns:26px 1fr; }
   .ctl{grid-column:2; }
 }
 </style>
+</head>
+<body>
 
 <div id="root"></div>
 <div class="saving" id="toast"></div>
@@ -229,6 +241,31 @@ footer{margin:46px 0 30px; padding-top:16px; border-top:1px solid var(--line);
 
   var state = JSON.parse(document.getElementById("state").textContent);
   var api = null, readOnly = false, timer = null;
+  var STORE_KEY = "medicine-status-v1";
+
+  // Fora do runtime de Artifacts a página guarda as marcações no próprio
+  // navegador. É por visitante: para publicar o quadro preenchido, use
+  // "Baixar HTML preenchido" e suba o arquivo no lugar deste.
+  function loadLocal(){
+    var raw;
+    try{ raw = window.localStorage.getItem(STORE_KEY); }catch(e){ return; }
+    if(!raw) return;
+    var saved;
+    try{ saved = JSON.parse(raw); }catch(e){ return; }
+    if(!saved || !saved.items) return;
+    var byNum = {};
+    saved.items.forEach(function(i){ byNum[i.n] = i; });
+    state.items.forEach(function(i){
+      var s = byNum[i.n];
+      if(!s) return;
+      if(STATUS[s.s]) i.s = s.s;
+      if(typeof s.o2 === "string") i.o2 = s.o2;
+    });
+  }
+  function saveLocal(){
+    try{ window.localStorage.setItem(STORE_KEY, JSON.stringify(state)); return true; }
+    catch(e){ return false; }
+  }
 
   function esc(s){
     return String(s).replace(/[&<>"']/g,function(c){
@@ -286,6 +323,17 @@ footer{margin:46px 0 30px; padding-top:16px; border-top:1px solid var(--line);
          + ' entregáveis estão marcados como “a confirmar”. Marque a situação real de cada item nos seletores à direita — '
          + 'a página guarda o que for marcado e passa a valer como documento de acompanhamento.</div>';
     }
+
+    h += '<div class="tools">'
+       + '<button class="tool" type="button" data-act="download">Baixar HTML preenchido</button>'
+       + '<button class="tool" type="button" data-act="reset">Limpar marcações</button>'
+       + '</div>';
+    h += '<p class="sec-sub" style="margin-top:8px">'
+       + (api
+          ? 'As marcações são salvas automaticamente e ficam visíveis para quem abrir este endereço.'
+          : 'As marcações ficam guardadas neste navegador. Para publicar o quadro preenchido para outras pessoas, '
+            + 'baixe o HTML preenchido e substitua o arquivo no servidor.')
+       + '</p>';
 
     GROUPS.forEach(function(g){
       var items = state.items.filter(function(i){ return i.f===g.id; });
@@ -378,35 +426,59 @@ footer{margin:46px 0 30px; padding-top:16px; border-top:1px solid var(--line);
   }
 
   function save(){
-    if(!api || readOnly) return;
+    if(readOnly) return;
     clearTimeout(timer);
     timer = setTimeout(function(){
-      toast("Salvando…", true);
-      api.publish(buildDoc()).then(function(){
-        toast("Salvo");
-      }).catch(function(err){
-        var code = err && err.code;
-        if(code === "conflict"){ return; }
-        if(code === "not_granted" || code === "not_writer"){
-          readOnly = true; document.body.classList.add("ro"); toast("Somente leitura");
-          return;
-        }
-        toast("Não foi possível salvar");
-      });
-    }, 700);
+      if(api){
+        toast("Salvando…", true);
+        api.publish(buildDoc()).then(function(){
+          toast("Salvo");
+        }).catch(function(err){
+          var code = err && err.code;
+          if(code === "conflict"){ return; }
+          if(code === "not_granted" || code === "not_writer"){
+            readOnly = true; document.body.classList.add("ro"); toast("Somente leitura");
+            return;
+          }
+          toast("Não foi possível salvar");
+        });
+      } else {
+        toast(saveLocal() ? "Salvo neste navegador" : "Não foi possível salvar");
+      }
+    }, 500);
   }
 
+  function download(){
+    var blob = new Blob([buildDoc()], {type:"text/html;charset=utf-8"});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url; a.download = "status.html";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+  }
+
+  function reset(){
+    if(!window.confirm("Limpar todas as marcações e voltar tudo para “a confirmar”?")) return;
+    state.items.forEach(function(i){ i.s = "unknown"; i.o2 = ""; });
+    render(); save();
+  }
+
+  document.addEventListener("click", function(e){
+    var t = e.target.closest ? e.target.closest("[data-act]") : null;
+    if(!t) return;
+    if(t.dataset.act === "download") download();
+    if(t.dataset.act === "reset") reset();
+  });
+
+  loadLocal();
   render();
 
   if(window.claude && typeof window.claude.use === "function"){
     window.claude.use("artifact").then(function(a){
-      if(a){ api = a; }
-      else { readOnly = true; document.body.classList.add("ro"); }
-    }).catch(function(){
-      readOnly = true; document.body.classList.add("ro");
-    });
-  } else {
-    readOnly = true; document.body.classList.add("ro");
+      if(a){ api = a; render(); }
+    }).catch(function(){});
   }
 })();
 </script>
+</body>
+</html>
