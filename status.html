@@ -128,8 +128,6 @@ input.note{width:100%; border:1px solid var(--line); background:var(--surface); 
   border-radius:7px; padding:5px 9px; font:inherit; font-size:.78rem}
 input.note::placeholder{color:var(--ink-mute)}
 input.note:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
-body.ro select.st,body.ro input.note{pointer-events:none; opacity:.85}
-body.ro input.note:placeholder-shown{visibility:hidden}
 
 /* pendencias */
 .cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px}
@@ -240,31 +238,67 @@ button.tool:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
   var GOLIVE     = new Date(2026,6,2);    // 02/07/2026 — 6 semanas após a assinatura
 
   var state = JSON.parse(document.getElementById("state").textContent);
-  var api = null, readOnly = false, timer = null;
-  var STORE_KEY = "medicine-status-v1";
 
-  // Fora do runtime de Artifacts a página guarda as marcações no próprio
-  // navegador. É por visitante: para publicar o quadro preenchido, use
-  // "Baixar HTML preenchido" e suba o arquivo no lugar deste.
-  function loadLocal(){
-    var raw;
-    try{ raw = window.localStorage.getItem(STORE_KEY); }catch(e){ return; }
-    if(!raw) return;
-    var saved;
-    try{ saved = JSON.parse(raw); }catch(e){ return; }
-    if(!saved || !saved.items) return;
-    var byNum = {};
-    saved.items.forEach(function(i){ byNum[i.n] = i; });
-    state.items.forEach(function(i){
-      var s = byNum[i.n];
-      if(!s) return;
-      if(STATUS[s.s]) i.s = s.s;
-      if(typeof s.o2 === "string") i.o2 = s.o2;
-    });
+  // As marcações moram na própria URL. Marcar um item reescreve o endereço;
+  // copiar e enviar o link é tudo o que existe para compartilhar o quadro.
+  // Um caractere por item, na ordem, e as observações só entram se houver.
+  var CODE = {unknown:"-", done:"d", partial:"p", pending:"n", blocked:"b"};
+  var FROM_CODE = {};
+  Object.keys(CODE).forEach(function(k){ FROM_CODE[CODE[k]] = k; });
+
+  function b64e(str){
+    return btoa(unescape(encodeURIComponent(str)))
+      .replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
   }
-  function saveLocal(){
-    try{ window.localStorage.setItem(STORE_KEY, JSON.stringify(state)); return true; }
-    catch(e){ return false; }
+  function b64d(str){
+    var s = str.replace(/-/g,"+").replace(/_/g,"/");
+    while(s.length % 4) s += "=";
+    return decodeURIComponent(escape(atob(s)));
+  }
+
+  function encodeState(){
+    var out = "s=" + state.items.map(function(i){ return CODE[i.s] || "-"; }).join("");
+    var notes = {};
+    state.items.forEach(function(i){ if(i.o2) notes[i.n] = i.o2; });
+    if(Object.keys(notes).length) out += "&n=" + b64e(JSON.stringify(notes));
+    return out;
+  }
+
+  function decodeState(){
+    var hash = String(location.hash || "").replace(/^#/, "");
+    if(!hash) return;
+    var parts = {};
+    hash.split("&").forEach(function(kv){
+      var i = kv.indexOf("=");
+      if(i > 0) parts[kv.slice(0,i)] = kv.slice(i+1);
+    });
+    if(parts.s){
+      var chars = parts.s.split("");
+      state.items.forEach(function(item, idx){
+        var st = FROM_CODE[chars[idx]];
+        if(st) item.s = st;
+      });
+    }
+    if(parts.n){
+      var notes;
+      try{ notes = JSON.parse(b64d(parts.n)); }catch(e){ return; }
+      state.items.forEach(function(item){
+        if(typeof notes[item.n] === "string") item.o2 = notes[item.n];
+      });
+    }
+  }
+
+  // Safari limita a frequência de replaceState, e digitar numa observação
+  // dispara a cada tecla — daí o atraso curto.
+  var urlTimer = null;
+  function syncUrl(){
+    clearTimeout(urlTimer);
+    urlTimer = setTimeout(function(){
+      try{ history.replaceState(null, "", "#" + encodeState()); }catch(e){}
+    }, 250);
+  }
+  function shareUrl(){
+    return location.origin + location.pathname + "#" + encodeState();
   }
 
   function esc(s){
@@ -320,19 +354,15 @@ button.tool:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
 
     if(c.unknown === total){
       h += '<div class="notice"><b>Nenhum status foi preenchido ainda.</b> Todos os '+total
-         + ' entregáveis estão marcados como “a confirmar”. Marque a situação real de cada item nos seletores à direita — '
-         + 'a página guarda o que for marcado e passa a valer como documento de acompanhamento.</div>';
+         + ' entregáveis estão marcados como “a confirmar”. Marque a situação de cada um nos seletores à direita.</div>';
     }
 
     h += '<div class="tools">'
-       + '<button class="tool" type="button" data-act="download">Baixar HTML preenchido</button>'
+       + '<button class="tool" type="button" data-act="copy">Copiar link do quadro</button>'
        + '<button class="tool" type="button" data-act="reset">Limpar marcações</button>'
        + '</div>';
     h += '<p class="sec-sub" style="margin-top:8px">'
-       + (api
-          ? 'As marcações são salvas automaticamente e ficam visíveis para quem abrir este endereço.'
-          : 'As marcações ficam guardadas neste navegador. Para publicar o quadro preenchido para outras pessoas, '
-            + 'baixe o HTML preenchido e substitua o arquivo no servidor.')
+       + 'As marcações ficam no endereço da página. Copie o link e envie: quem abrir vê o quadro exatamente como você marcou.'
        + '</p>';
 
     GROUPS.forEach(function(g){
@@ -410,74 +440,36 @@ button.tool:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
     if(!keep) setTimeout(function(){ t.classList.remove("on"); }, 1800);
   }
 
-  function buildDoc(){
-    var css = document.getElementById("css").textContent;
-    var js  = document.getElementById("app").textContent;
-    var font = 'https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800'
-             + '&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap';
-    return '<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">'
-      + '<meta name="viewport" content="width=device-width,initial-scale=1">'
-      + '<title>Implantação Medicine</title>'
-      + '<link rel="stylesheet" href="'+font+'">'
-      + '<style id="css">'+css+'</style></head><body>'
-      + '<div id="root"></div><div class="saving" id="toast"></div>'
-      + '<script type="application/json" id="state">'+JSON.stringify(state)+'<\/script>'
-      + '<script id="app">'+js+'<\/script></body></html>';
-  }
-
   function save(){
-    if(readOnly) return;
-    clearTimeout(timer);
-    timer = setTimeout(function(){
-      if(api){
-        toast("Salvando…", true);
-        api.publish(buildDoc()).then(function(){
-          toast("Salvo");
-        }).catch(function(err){
-          var code = err && err.code;
-          if(code === "conflict"){ return; }
-          if(code === "not_granted" || code === "not_writer"){
-            readOnly = true; document.body.classList.add("ro"); toast("Somente leitura");
-            return;
-          }
-          toast("Não foi possível salvar");
-        });
-      } else {
-        toast(saveLocal() ? "Salvo neste navegador" : "Não foi possível salvar");
-      }
-    }, 500);
+    syncUrl();
   }
 
-  function download(){
-    var blob = new Blob([buildDoc()], {type:"text/html;charset=utf-8"});
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement("a");
-    a.href = url; a.download = "status.html";
-    document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+  function copyLink(){
+    var url = shareUrl();
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(url).then(function(){
+        toast("Link copiado");
+      }).catch(function(){ prompt("Copie o link do quadro:", url); });
+    } else {
+      prompt("Copie o link do quadro:", url);
+    }
   }
 
   function reset(){
     if(!window.confirm("Limpar todas as marcações e voltar tudo para “a confirmar”?")) return;
     state.items.forEach(function(i){ i.s = "unknown"; i.o2 = ""; });
-    render(); save();
+    syncUrl(); render();
   }
 
   document.addEventListener("click", function(e){
     var t = e.target.closest ? e.target.closest("[data-act]") : null;
     if(!t) return;
-    if(t.dataset.act === "download") download();
+    if(t.dataset.act === "copy") copyLink();
     if(t.dataset.act === "reset") reset();
   });
 
-  loadLocal();
+  decodeState();
   render();
-
-  if(window.claude && typeof window.claude.use === "function"){
-    window.claude.use("artifact").then(function(a){
-      if(a){ api = a; render(); }
-    }).catch(function(){});
-  }
 })();
 </script>
 </body>
