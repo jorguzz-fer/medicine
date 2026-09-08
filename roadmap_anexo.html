@@ -283,7 +283,7 @@
 
   <!-- IDENTIFICAÇÃO DAS PARTES -->
   <div class="partes-bloco">
-    <p><span class="negrito">Contratante:</span> Medicina Cursos — CNPJ: [CNPJ DA CONTRATANTE]</p>
+    <p><span class="negrito">Contratante:</span> Med Cine Editora e Filmagem Ltda (Medicina Cursos) — CNPJ: 07.050.619/0001-50</p>
     <p><span class="negrito">Contratada:</span> Tudo Mudou Marketing e Consultoria LTDA — CNPJ: 40.790.711/0001-21</p>
     <p><span class="negrito">Data de referência:</span> 14 de maio de 2026</p>
     <p><span class="negrito">Prazo total previsto:</span> 6 (seis) semanas a partir do aceite + entrega dos acessos</p>
@@ -407,6 +407,13 @@
             <li>Configuração dos fluxos de triagem automática: classificação de intenção do usuário, respostas automáticas e roteamento por canal</li>
             <li>Configuração das regras de escalonamento para atendimento humano: palavras-chave críticas, solicitação explícita do usuário e fallback por falha de resposta</li>
             <li>Configuração de caixas de entrada, equipes e agentes humanos no Chatwoot</li>
+            <li>Configuração de perfis de acesso e permissões granulares por usuário e equipe no Chatwoot</li>
+            <li>Ativação da criptografia em repouso do histórico de conversas</li>
+            <li>Armazenamento dos tokens e credenciais de API em variáveis de ambiente, com procedimento de rotação documentado</li>
+            <li>Configuração da autenticação dos webhooks por chave secreta</li>
+            <li>Definição e aplicação da política de retenção dos logs da IA</li>
+            <li>Implantação da rotina de backup diário automatizado das conversas, base de conhecimento e configurações, com teste de restauração</li>
+            <li>Configuração do monitoramento de uptime dos canais integrados e dos alertas automáticos de falha</li>
             <li>Testes funcionais por canal: WhatsApp, Instagram e Webchat</li>
             <li>Correções e ajustes com base nos resultados dos testes</li>
           </ul>
@@ -426,6 +433,8 @@
             <li>Claude / GPT (LLM para atendente IA)</li>
             <li>Docker / VPS Linux</li>
             <li>Nginx + SSL (Let's Encrypt)</li>
+            <li>Monitoramento de uptime e alertas automáticos</li>
+            <li>Rotina automatizada de backup e retenção</li>
           </ul>
         </div>
         <div class="fase-col">
@@ -437,6 +446,11 @@
           <div class="deliverable-item">Agente de IA treinado e respondendo nos três canais</div>
           <div class="deliverable-item">Fluxo de triagem automática configurado e validado</div>
           <div class="deliverable-item">Escalonamento humano funcionando corretamente</div>
+          <div class="deliverable-item">Perfis de acesso e permissões granulares configurados</div>
+          <div class="deliverable-item">Histórico de conversas criptografado em repouso</div>
+          <div class="deliverable-item">Tokens e webhooks protegidos, com procedimento de rotação documentado</div>
+          <div class="deliverable-item">Backup diário automatizado ativo, com restauração testada</div>
+          <div class="deliverable-item">Monitoramento de uptime e alertas automáticos operacionais</div>
           <div class="deliverable-item">Relatório de testes por canal (aprovação da CONTRATANTE)</div>
         </div>
       </div>
@@ -464,6 +478,8 @@
             <li>Testes integrados ponta a ponta: simulação de jornadas completas do lead desde o primeiro contato até o handoff comercial</li>
             <li>Ajustes e refinamentos nos fluxos com base nos resultados dos testes integrados</li>
             <li>Treinamento formal da equipe da CONTRATANTE: uso do Chatwoot, gerenciamento da caixa de entrada, interpretação dos leads qualificados pelo SDR e operação básica das ferramentas</li>
+            <li>Validação do plano de recuperação: simulação de indisponibilidade total e teste de restabelecimento a partir do backup, dentro da meta de 4 (quatro) horas</li>
+            <li>Documentação do procedimento de atendimento a solicitações de titulares de dados (exclusão e anonimização — direito ao esquecimento), nos termos da LGPD</li>
             <li>Documentação operacional: manual básico de uso e guia de perguntas frequentes para a equipe</li>
             <li>Go-live: ativação completa da solução em ambiente de produção</li>
             <li>Monitoramento assistido nas primeiras 48 horas após go-live</li>
@@ -494,6 +510,8 @@
           <div class="deliverable-item">Handoff para time comercial configurado e testado</div>
           <div class="deliverable-item">Relatório de testes ponta a ponta aprovado</div>
           <div class="deliverable-item">Equipe treinada e operando as ferramentas</div>
+          <div class="deliverable-item">Plano de recuperação documentado e testado (meta de restabelecimento em até 4 horas)</div>
+          <div class="deliverable-item">Procedimento de direito ao esquecimento documentado e operacional</div>
           <div class="deliverable-item">Manual operacional básico entregue</div>
           <div class="deliverable-item">Solução em produção (go-live)</div>
           <div class="deliverable-item">Termo de Homologação assinado pelas Partes</div>
@@ -558,9 +576,112 @@
       <td>Atualização da base da IA com novos cursos, pós-graduações e informações de inscrição fornecidas pela CONTRATANTE</td>
       <td>Sob demanda (até 5 dias úteis após envio das informações)</td>
     </tr>
+    <tr>
+      <td><strong>Monitoramento de Uptime e Alertas</strong></td>
+      <td>Monitoramento ativo da disponibilidade dos canais integrados, com disparo de alertas automáticos à CONTRATADA em caso de falha</td>
+      <td>Contínuo e automatizado (24×7)</td>
+    </tr>
+    <tr>
+      <td><strong>Backup e Retenção</strong></td>
+      <td>Backup automatizado das conversas, base de conhecimento e configurações, com retenção mínima de 30 (trinta) dias e teste periódico de restauração</td>
+      <td>Backup diário; teste de restauração trimestral</td>
+    </tr>
+    <tr>
+      <td><strong>Plano de Recuperação</strong></td>
+      <td>Restabelecimento da operação em caso de indisponibilidade total, a partir dos backups e da infraestrutura disponibilizada pela CONTRATANTE</td>
+      <td>Meta de restabelecimento em até 4 (quatro) horas do início do atendimento, ressalvadas dependências de terceiros</td>
+    </tr>
+    <tr>
+      <td><strong>Gestão de Acessos e Segredos</strong></td>
+      <td>Manutenção dos perfis de permissão dos usuários, rotação dos tokens de API e das chaves secretas dos webhooks</td>
+      <td>Rotação semestral ou imediata em caso de incidente de segurança</td>
+    </tr>
+    <tr>
+      <td><strong>LGPD — Direitos do Titular</strong></td>
+      <td>Execução das solicitações de exclusão ou anonimização de dados de titulares (direito ao esquecimento) encaminhadas pela CONTRATANTE, na qualidade de Controladora</td>
+      <td>Até 5 dias úteis após solicitação formal</td>
+    </tr>
+    <tr>
+      <td><strong>Relatórios de Desempenho</strong></td>
+      <td>Relatório de desempenho do atendente IA e do SDR: volume de conversas, taxa de triagem automática, escalonamentos e leads qualificados (Cláusula 5 do contrato principal)</td>
+      <td>Mensal ou sob demanda (até 5 dias úteis após solicitação)</td>
+    </tr>
   </table>
 
   <p>Os serviços listados acima estão incluídos na mensalidade contratada, observados os limites de uso razoável definidos na Cláusula 12 do contrato principal. Demandas fora do escopo ou em volume extraordinário serão orçadas separadamente.</p>
+
+  <div class="box-nota">
+    <p class="box-nota-titulo">Observação sobre a meta de restabelecimento em 4 horas</p>
+    <p>A meta de restabelecimento em até 4 (quatro) horas prevista na linha <span class="negrito">Plano de Recuperação</span> pressupõe janela de acionamento mais ampla do que a estabelecida na Cláusula 7.1 do contrato principal (segunda a sexta-feira, das 9h às 18h). Para que a meta seja exigível fora do horário comercial, as Partes deverão ajustar a Cláusula 7.1 por meio de aditivo, definindo o regime de sobreaviso aplicável. Enquanto não houver tal ajuste, a meta de 4 horas é contada dentro da janela de suporte vigente.</p>
+  </div>
+
+  <!-- MATRIZ DE RASTREABILIDADE -->
+  <h2 class="secao">6. Matriz de Rastreabilidade — Proposta 003/2026</h2>
+  <p>A tabela abaixo relaciona cada compromisso assumido na Proposta Comercial 003/2026 ao instrumento que o formaliza, de modo a assegurar que o escopo apresentado à CONTRATANTE esteja integralmente refletido no contrato e neste Anexo.</p>
+
+  <table class="suporte-table">
+    <tr>
+      <th>Compromisso da Proposta 003/2026</th>
+      <th>Onde está formalizado</th>
+    </tr>
+    <tr>
+      <td>Chatwoot omnichannel unificando WhatsApp Business, Instagram Direct e Webchat</td>
+      <td>Contrato, Cláusula 1.1 (Frente 01) · Anexo I, Fase 02</td>
+    </tr>
+    <tr>
+      <td>IA com base de conhecimento dos cursos e pós-graduações; triagem automática, escalonamento humano, histórico por cliente e atendimento 24×7</td>
+      <td>Contrato, Cláusula 1.1 (Frente 01) · Anexo I, Fases 01 e 02</td>
+    </tr>
+    <tr>
+      <td>Discovery &amp; Modelagem, SDR por IA, coleta de intenção de matrícula e handoff com contexto completo</td>
+      <td>Contrato, Cláusula 1.1 (Frente 02) · Anexo I, Fases 01 e 03</td>
+    </tr>
+    <tr>
+      <td>Treinamento formal da equipe e consultoria estratégica por todo o período</td>
+      <td>Contrato, Cláusula 1.2 · Anexo I, Fase 03 e Seção 5</td>
+    </tr>
+    <tr>
+      <td>Manutenção do atendente IA, refinamento com base em conversas reais e suporte técnico aos canais</td>
+      <td>Contrato, Cláusulas 1.2 e 5 · Anexo I, Seção 5</td>
+    </tr>
+    <tr>
+      <td>Monitoramento de uptime e melhorias contínuas; alertas automáticos em caso de falha</td>
+      <td>Anexo I, Fase 02 e Seção 5</td>
+    </tr>
+    <tr>
+      <td>Backup diário das conversas e configurações</td>
+      <td>Anexo I, Fase 02 e Seção 5</td>
+    </tr>
+    <tr>
+      <td>Plano de recuperação em caso de indisponibilidade</td>
+      <td>Anexo I, Fase 03 e Seção 5 (observada a ressalva quanto à janela de suporte)</td>
+    </tr>
+    <tr>
+      <td>Histórico de conversa criptografado em repouso; acesso por usuário com permissões granulares</td>
+      <td>Anexo I, Fase 02</td>
+    </tr>
+    <tr>
+      <td>Tokens de API rotacionáveis via variável de ambiente; webhooks autenticados com chave secreta</td>
+      <td>Anexo I, Fase 02 e Seção 5</td>
+    </tr>
+    <tr>
+      <td>Logs de IA com retenção controlada; direito ao esquecimento implementável sob demanda</td>
+      <td>Anexo I, Fase 02, Fase 03 e Seção 5 · Contrato, Cláusula 10</td>
+    </tr>
+    <tr>
+      <td>Evolution API em ambiente isolado; comunicação 100% HTTPS (SSL Let's Encrypt); Chatwoot self-hosted em VPS</td>
+      <td>Anexo I, Fase 02 · Contrato, Cláusulas 4 e 6</td>
+    </tr>
+    <tr>
+      <td>Dados de cliente nunca compartilhados com terceiros; conformidade com a LGPD</td>
+      <td>Contrato, Cláusula 10 (10.4 e 10.5)</td>
+    </tr>
+  </table>
+
+  <div class="box-nota">
+    <p class="box-nota-titulo">Escopo não incluído, conforme a Proposta 003/2026</p>
+    <p>Permanecem fora do escopo, devendo ser orçados separadamente: criação de conteúdo, copywriting e landing pages; integrações com plataformas além de Chatwoot, WhatsApp, Instagram e Webchat — inclusive plataforma de e-commerce, ainda que citada a título ilustrativo no diagrama de arquitetura da proposta; custos de infraestrutura (VPS, domínio e certificado SSL); custos de APIs de inteligência artificial e Evolution API; e novas frentes ou módulos não previstos no escopo contratado.</p>
+  </div>
 
   <!-- DATA E LOCAL -->
   <div class="data-assinatura">
@@ -574,8 +695,8 @@
       <div class="assinatura-col">
         <div class="linha-assinatura">
           <strong>CONTRATANTE</strong><br>
-          Medicina Cursos<br>
-          CNPJ: [CNPJ DA CONTRATANTE]<br>
+          Med Cine Editora e Filmagem Ltda (Medicina Cursos)<br>
+          CNPJ: 07.050.619/0001-50<br>
           Nome: ________________________________<br>
           Cargo: ________________________________
         </div>
