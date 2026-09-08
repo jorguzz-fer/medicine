@@ -1,0 +1,412 @@
+<title>Implantação Medicine</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style id="css">
+:root{
+  --ground:#f2f4fa; --surface:#ffffff; --surface2:#eaeef7; --sunken:#e3e8f4;
+  --ink:#1e1e33; --ink-soft:#55557a; --ink-mute:#8686a6;
+  --line:#dbe1ef; --line-soft:#e8ecf6;
+  --navy:#1a1a2e; --navy2:#0f3460; --accent:#e94560;
+  --done:#0d8f6f; --done-bg:#dff5ee;
+  --partial:#b0730a; --partial-bg:#fdf0d9;
+  --pending:#5f5f85; --pending-bg:#e9ebf5;
+  --blocked:#c22e3f; --blocked-bg:#fce4e7;
+  --unknown:#7b7b9c; --unknown-bg:#eeeff6;
+  --on-navy:#ffffff; --on-navy-soft:#b9c2dd;
+  --shadow:0 1px 2px rgba(26,26,46,.06), 0 8px 24px rgba(26,26,46,.07);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#101020; --surface:#1a1a2c; --surface2:#22223a; --sunken:#161628;
+    --ink:#ecedf6; --ink-soft:#a8aac6; --ink-mute:#7c7e9c;
+    --line:#31314d; --line-soft:#282842;
+    --navy:#12121f; --navy2:#123059; --accent:#ff5c76;
+    --done:#3ad5a8; --done-bg:#0d3a30;
+    --partial:#f2b23e; --partial-bg:#3d2f10;
+    --pending:#a3a5c8; --pending-bg:#26263c;
+    --blocked:#ff7183; --blocked-bg:#3d1a20;
+    --unknown:#8e90b2; --unknown-bg:#23233a;
+    --on-navy:#ffffff; --on-navy-soft:#a9b3d0;
+    --shadow:0 1px 2px rgba(0,0,0,.35), 0 8px 24px rgba(0,0,0,.32);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#101020; --surface:#1a1a2c; --surface2:#22223a; --sunken:#161628;
+  --ink:#ecedf6; --ink-soft:#a8aac6; --ink-mute:#7c7e9c;
+  --line:#31314d; --line-soft:#282842;
+  --navy:#12121f; --navy2:#123059; --accent:#ff5c76;
+  --done:#3ad5a8; --done-bg:#0d3a30;
+  --partial:#f2b23e; --partial-bg:#3d2f10;
+  --pending:#a3a5c8; --pending-bg:#26263c;
+  --blocked:#ff7183; --blocked-bg:#3d1a20;
+  --unknown:#8e90b2; --unknown-bg:#23233a;
+  --on-navy:#ffffff; --on-navy-soft:#a9b3d0;
+  --shadow:0 1px 2px rgba(0,0,0,.35), 0 8px 24px rgba(0,0,0,.32);
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:'IBM Plex Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+  font-size:15px; line-height:1.6; -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{font-family:'Archivo',ui-sans-serif,system-ui,sans-serif; text-wrap:balance; margin:0}
+.mono{font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace; font-variant-numeric:tabular-nums}
+.wrap{max-width:1080px; margin:0 auto; padding:0 24px}
+
+/* header */
+header{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%); color:var(--on-navy); position:relative; overflow:hidden}
+header::after{content:''; position:absolute; right:-90px; top:-110px; width:360px; height:360px; border-radius:50%; background:rgba(233,69,96,.16)}
+.hd{position:relative; padding:40px 0 34px}
+.eyebrow{display:inline-block; background:var(--accent); color:#fff; font-size:10.5px; font-weight:700;
+  letter-spacing:1.6px; text-transform:uppercase; padding:5px 11px; border-radius:20px; margin-bottom:14px;
+  font-family:'IBM Plex Mono',monospace}
+header h1{font-size:clamp(1.7rem,4vw,2.3rem); font-weight:800; letter-spacing:-.02em; margin-bottom:8px}
+header .lede{color:var(--on-navy-soft); max-width:60ch; font-size:.95rem}
+.facts{display:flex; flex-wrap:wrap; gap:28px; margin-top:26px}
+.fact-l{font-size:10px; letter-spacing:1.2px; text-transform:uppercase; color:var(--on-navy-soft); font-family:'IBM Plex Mono',monospace}
+.fact-v{font-size:.92rem; font-weight:600; margin-top:2px}
+.fact-v.late{color:#ff8ea0}
+
+/* scoreboard */
+.board{display:grid; grid-template-columns:repeat(auto-fit,minmax(148px,1fr)); gap:12px; margin:-26px 0 0;
+  position:relative; z-index:1}
+.tile{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:16px 18px; box-shadow:var(--shadow)}
+.tile .n{font-size:1.9rem; font-weight:800; font-family:'Archivo',sans-serif; line-height:1.1; font-variant-numeric:tabular-nums}
+.tile .l{font-size:10.5px; letter-spacing:1.1px; text-transform:uppercase; color:var(--ink-mute); margin-top:3px; font-family:'IBM Plex Mono',monospace}
+.tile.t-done .n{color:var(--done)} .tile.t-partial .n{color:var(--partial)}
+.tile.t-pending .n{color:var(--pending)} .tile.t-blocked .n{color:var(--blocked)}
+.tile.t-unknown .n{color:var(--unknown)}
+
+.bar{display:flex; height:8px; border-radius:99px; overflow:hidden; background:var(--sunken); margin:18px 0 0; border:1px solid var(--line)}
+.bar i{display:block; height:100%}
+.bar i.done{background:var(--done)} .bar i.partial{background:var(--partial)}
+.bar i.pending{background:var(--pending)} .bar i.blocked{background:var(--blocked)}
+.bar i.unknown{background:var(--unknown); opacity:.45}
+
+/* notice */
+.notice{margin:22px 0 0; border-left:3px solid var(--accent); background:var(--surface); border-radius:0 10px 10px 0;
+  padding:14px 18px; font-size:.9rem; color:var(--ink-soft); box-shadow:var(--shadow)}
+.notice b{color:var(--ink)}
+
+/* sections */
+section{margin-top:38px}
+.sec-hd{display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; margin-bottom:4px}
+.sec-hd h2{font-size:1.12rem; font-weight:700; letter-spacing:-.01em}
+.sec-hd .when{font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--ink-mute); font-family:'IBM Plex Mono',monospace}
+.sec-sub{color:var(--ink-soft); font-size:.88rem; margin:0 0 14px}
+
+.rows{background:var(--surface); border:1px solid var(--line); border-radius:12px; overflow:hidden; box-shadow:var(--shadow)}
+.row{display:grid; grid-template-columns:34px 1fr 168px; gap:14px; align-items:start;
+  padding:13px 18px; border-top:1px solid var(--line-soft)}
+.row:first-child{border-top:none}
+.row.s-done{background:linear-gradient(90deg,var(--done-bg) 0 3px,transparent 3px)}
+.row.s-partial{background:linear-gradient(90deg,var(--partial-bg) 0 3px,transparent 3px)}
+.row.s-blocked{background:linear-gradient(90deg,var(--blocked-bg) 0 3px,transparent 3px)}
+.num{font-size:12px; color:var(--ink-mute); padding-top:3px; font-family:'IBM Plex Mono',monospace}
+.ttl{font-weight:500; font-size:.94rem}
+.meta{font-size:.8rem; color:var(--ink-mute); margin-top:2px}
+.tag{display:inline-block; font-size:9.5px; letter-spacing:.9px; text-transform:uppercase; font-weight:600;
+  padding:2px 7px; border-radius:5px; background:var(--surface2); color:var(--ink-soft); margin-left:8px;
+  font-family:'IBM Plex Mono',monospace; vertical-align:1px}
+.tag.novo{background:var(--accent); color:#fff}
+.ctl{display:flex; flex-direction:column; gap:6px}
+select.st{width:100%; appearance:none; border-radius:7px; border:1px solid var(--line); padding:6px 26px 6px 10px;
+  font:inherit; font-size:.82rem; font-weight:600; background:var(--surface2); color:var(--ink); cursor:pointer;
+  background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);
+  background-position:calc(100% - 14px) 52%,calc(100% - 9px) 52%; background-size:5px 5px,5px 5px; background-repeat:no-repeat}
+select.st:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
+select.st.v-done{background-color:var(--done-bg); color:var(--done); border-color:var(--done)}
+select.st.v-partial{background-color:var(--partial-bg); color:var(--partial); border-color:var(--partial)}
+select.st.v-pending{background-color:var(--pending-bg); color:var(--pending)}
+select.st.v-blocked{background-color:var(--blocked-bg); color:var(--blocked); border-color:var(--blocked)}
+select.st.v-unknown{background-color:var(--unknown-bg); color:var(--unknown)}
+input.note{width:100%; border:1px solid var(--line); background:var(--surface); color:var(--ink);
+  border-radius:7px; padding:5px 9px; font:inherit; font-size:.78rem}
+input.note::placeholder{color:var(--ink-mute)}
+input.note:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
+body.ro select.st,body.ro input.note{pointer-events:none; opacity:.85}
+body.ro input.note:placeholder-shown{visibility:hidden}
+
+/* pendencias */
+.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px}
+.card{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:18px; box-shadow:var(--shadow)}
+.card h3{font-size:.98rem; font-weight:700; margin-bottom:6px}
+.card p{margin:0; font-size:.87rem; color:var(--ink-soft)}
+.card .k{font-size:10px; letter-spacing:1.1px; text-transform:uppercase; color:var(--accent);
+  font-family:'IBM Plex Mono',monospace; font-weight:600; display:block; margin-bottom:7px}
+
+footer{margin:46px 0 30px; padding-top:16px; border-top:1px solid var(--line);
+  font-size:.78rem; color:var(--ink-mute); display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap}
+.saving{position:fixed; right:16px; bottom:16px; background:var(--navy); color:#fff; font-size:.78rem;
+  padding:8px 14px; border-radius:8px; opacity:0; transition:opacity .2s; pointer-events:none; z-index:9;
+  font-family:'IBM Plex Mono',monospace}
+.saving.on{opacity:.94}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:640px){
+  .row{grid-template-columns:26px 1fr; }
+  .ctl{grid-column:2; }
+}
+</style>
+
+<div id="root"></div>
+<div class="saving" id="toast"></div>
+
+<script type="application/json" id="state">
+{
+  "items": [
+    {"n":1,"f":"f1","t":"Ata de kickoff assinada","m":"","s":"unknown","o":""},
+    {"n":2,"f":"f1","t":"Checklist de acessos validado","m":"","s":"unknown","o":""},
+    {"n":3,"f":"f1","t":"Documento de mapeamento dos canais ativos","m":"WhatsApp, Instagram Direct e Webchat","s":"unknown","o":""},
+    {"n":4,"f":"f1","t":"Portfólio de cursos estruturado","m":"Base para treinamento da IA","s":"unknown","o":""},
+    {"n":5,"f":"f1","t":"Documento de tom de voz e personas da IA","m":"Aprovado pela contratante","s":"unknown","o":""},
+    {"n":6,"f":"f1","t":"Mapa da jornada do lead (as-is)","m":"","s":"unknown","o":""},
+
+    {"n":7,"f":"f2","t":"Chatwoot instalado e acessível via domínio seguro","m":"Self-hosted, Docker, SSL","s":"unknown","o":""},
+    {"n":8,"f":"f2","t":"WhatsApp Business integrado e operacional","m":"Via Evolution API","s":"unknown","o":""},
+    {"n":9,"f":"f2","t":"Instagram Direct integrado e operacional","m":"Via Meta Graph API","s":"unknown","o":""},
+    {"n":10,"f":"f2","t":"Webchat ativo no site","m":"","s":"unknown","o":""},
+    {"n":11,"f":"f2","t":"Agente de IA treinado e respondendo nos três canais","m":"","s":"unknown","o":""},
+    {"n":12,"f":"f2","t":"Fluxo de triagem automática configurado e validado","m":"","s":"unknown","o":""},
+    {"n":13,"f":"f2","t":"Escalonamento humano funcionando corretamente","m":"","s":"unknown","o":""},
+    {"n":14,"f":"f2","t":"Relatório de testes por canal aprovado","m":"","s":"unknown","o":""},
+    {"n":15,"f":"f2","t":"Perfis de acesso e permissões granulares","m":"","s":"unknown","o":"Proposta §06"},
+    {"n":16,"f":"f2","t":"Histórico de conversas criptografado em repouso","m":"","s":"unknown","o":"Proposta §06"},
+    {"n":17,"f":"f2","t":"Tokens e webhooks protegidos, com rotação documentada","m":"Variáveis de ambiente e chave secreta","s":"unknown","o":"Proposta §06"},
+    {"n":18,"f":"f2","t":"Backup diário automatizado, com restauração testada","m":"","s":"unknown","o":"Proposta §06"},
+    {"n":19,"f":"f2","t":"Monitoramento de uptime e alertas automáticos","m":"","s":"unknown","o":"Proposta §06"},
+
+    {"n":20,"f":"f3","t":"SDR por IA ativo e qualificando leads","m":"N8N + LLM","s":"unknown","o":""},
+    {"n":21,"f":"f3","t":"Coleta de dados de intenção de matrícula","m":"Planilha ou CRM da contratante","s":"unknown","o":""},
+    {"n":22,"f":"f3","t":"Handoff para o time comercial configurado e testado","m":"Com resumo e contexto da conversa","s":"unknown","o":""},
+    {"n":23,"f":"f3","t":"Relatório de testes ponta a ponta aprovado","m":"","s":"unknown","o":""},
+    {"n":24,"f":"f3","t":"Equipe treinada e operando as ferramentas","m":"","s":"unknown","o":""},
+    {"n":25,"f":"f3","t":"Plano de recuperação documentado e testado","m":"Meta de restabelecimento em 4 horas","s":"unknown","o":"Proposta §06"},
+    {"n":26,"f":"f3","t":"Procedimento de direito ao esquecimento","m":"LGPD — exclusão e anonimização","s":"unknown","o":"Proposta §06"},
+    {"n":27,"f":"f3","t":"Manual operacional básico entregue","m":"","s":"unknown","o":""},
+    {"n":28,"f":"f3","t":"Solução em produção — go-live","m":"","s":"unknown","o":""},
+    {"n":29,"f":"f3","t":"Termo de Homologação assinado","m":"Inicia a vigência de 12 meses","s":"unknown","o":""},
+
+    {"n":30,"f":"sv","t":"Manutenção do Atendente IA","m":"Contínua · até 5 dias úteis para ajustes","s":"unknown","o":""},
+    {"n":31,"f":"sv","t":"Refinamentos do SDR","m":"Mensal ou sob demanda","s":"unknown","o":""},
+    {"n":32,"f":"sv","t":"Suporte técnico aos canais","m":"Seg–sex 9h–18h · 4h/24h úteis","s":"unknown","o":""},
+    {"n":33,"f":"sv","t":"Consultoria estratégica","m":"1 reunião por mês","s":"unknown","o":""},
+    {"n":34,"f":"sv","t":"Atualizações de base de conhecimento","m":"Até 5 dias úteis","s":"unknown","o":""},
+    {"n":35,"f":"sv","t":"Monitoramento de uptime e alertas","m":"Contínuo · 24×7","s":"unknown","o":"Proposta §06"},
+    {"n":36,"f":"sv","t":"Backup e retenção","m":"Diário · 30 dias · teste trimestral","s":"unknown","o":"Proposta §06"},
+    {"n":37,"f":"sv","t":"Plano de recuperação","m":"Meta de 4h · ver ressalva da Cláusula 7.1","s":"unknown","o":"Proposta §06"},
+    {"n":38,"f":"sv","t":"Gestão de acessos e segredos","m":"Rotação semestral","s":"unknown","o":"Proposta §06"},
+    {"n":39,"f":"sv","t":"LGPD — direitos do titular","m":"Até 5 dias úteis","s":"unknown","o":"Proposta §06"},
+    {"n":40,"f":"sv","t":"Relatórios de desempenho","m":"Mensal ou sob demanda","s":"unknown","o":"Cláusula 5"}
+  ]
+}
+</script>
+
+<script id="app">
+(function(){
+  "use strict";
+
+  var STATUS = {
+    done:    {label:"Entregue",    cls:"done"},
+    partial: {label:"Parcial",     cls:"partial"},
+    pending: {label:"Não iniciado",cls:"pending"},
+    blocked: {label:"Bloqueado",   cls:"blocked"},
+    unknown: {label:"A confirmar", cls:"unknown"}
+  };
+  var ORDER = ["done","partial","pending","blocked","unknown"];
+
+  var GROUPS = [
+    {id:"f1", t:"Fase 01 — Discovery & Modelagem", when:"Semanas 1–2",
+     s:"Levantamento dos canais, portfólio de cursos, tom de voz da IA e coleta de acessos."},
+    {id:"f2", t:"Fase 02 — Chatwoot & IA", when:"Semanas 3–4",
+     s:"Infraestrutura, integração dos três canais, treinamento da IA e camada de segurança."},
+    {id:"f3", t:"Fase 03 — SDR por IA e go-live", when:"Semanas 5–6",
+     s:"Qualificação automática, handoff comercial, treinamento da equipe e entrega em produção."},
+    {id:"sv", t:"Serviços continuados", when:"Pós go-live",
+     s:"Incluídos na mensalidade durante toda a vigência contratual."}
+  ];
+
+  var ASSINATURA = new Date(2026,4,21);   // 21/05/2026
+  var GOLIVE     = new Date(2026,6,2);    // 02/07/2026 — 6 semanas após a assinatura
+
+  var state = JSON.parse(document.getElementById("state").textContent);
+  var api = null, readOnly = false, timer = null;
+
+  function esc(s){
+    return String(s).replace(/[&<>"']/g,function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];
+    });
+  }
+  function fmt(d){
+    return String(d.getDate()).padStart(2,"0")+"/"+String(d.getMonth()+1).padStart(2,"0")+"/"+d.getFullYear();
+  }
+  function daysBetween(a,b){ return Math.round((b-a)/86400000); }
+
+  function counts(){
+    var c={done:0,partial:0,pending:0,blocked:0,unknown:0};
+    state.items.forEach(function(i){ c[i.s]=(c[i.s]||0)+1; });
+    return c;
+  }
+
+  function render(){
+    var c = counts(), total = state.items.length;
+    var late = daysBetween(GOLIVE, new Date());
+    var lateTxt = late > 0 ? late + " dias além do prazo" : "dentro do prazo";
+
+    var h = "";
+
+    h += '<header><div class="wrap hd">'
+       + '<span class="eyebrow">Status de implantação</span>'
+       + '<h1>Medicine × Tudo Mudou!</h1>'
+       + '<p class="lede">Acompanhamento dos entregáveis contratados na Proposta 003/2026 e no Anexo I — Roadmap de Implantação, parte integrante do contrato.</p>'
+       + '<div class="facts">'
+       +   fact("Contrato assinado", fmt(ASSINATURA))
+       +   fact("Go-live previsto", fmt(GOLIVE))
+       +   fact(late>0?"Situação do prazo":"Prazo", lateTxt, late>0)
+       +   fact("Entregáveis", total)
+       + '</div></div></header>';
+
+    h += '<div class="wrap">';
+
+    h += '<div class="board">'
+       + tile(c.done,"Entregues","t-done")
+       + tile(c.partial,"Parciais","t-partial")
+       + tile(c.pending,"Não iniciados","t-pending")
+       + tile(c.blocked,"Bloqueados","t-blocked")
+       + tile(c.unknown,"A confirmar","t-unknown")
+       + '</div>';
+
+    h += '<div class="bar" role="img" aria-label="Distribuição dos '+total+' entregáveis por situação">'
+       + ORDER.map(function(k){
+           var pct = (c[k]/total)*100;
+           return pct ? '<i class="'+k+'" style="width:'+pct.toFixed(2)+'%"></i>' : '';
+         }).join("")
+       + '</div>';
+
+    if(c.unknown === total){
+      h += '<div class="notice"><b>Nenhum status foi preenchido ainda.</b> Todos os '+total
+         + ' entregáveis estão marcados como “a confirmar”. Marque a situação real de cada item nos seletores à direita — '
+         + 'a página guarda o que for marcado e passa a valer como documento de acompanhamento.</div>';
+    }
+
+    GROUPS.forEach(function(g){
+      var items = state.items.filter(function(i){ return i.f===g.id; });
+      h += '<section><div class="sec-hd"><h2>'+esc(g.t)+'</h2><span class="when">'+esc(g.when)+'</span></div>'
+         + '<p class="sec-sub">'+esc(g.s)+'</p><div class="rows">'
+         + items.map(row).join("")
+         + '</div></section>';
+    });
+
+    h += '<section><div class="sec-hd"><h2>Pontos em aberto</h2></div>'
+       + '<p class="sec-sub">Questões contratuais que independem do andamento técnico.</p>'
+       + '<div class="cards">'
+       + card("Cláusula 7.1","Meta de recuperação em 4 horas",
+              "A proposta prometeu restabelecimento em até 4 horas. O contrato prevê suporte apenas de segunda a sexta, das 9h às 18h. Enquanto não houver aditivo definindo regime de sobreaviso, a meta vale dentro da janela comercial.")
+       + card("Cláusula 2.3","Contagem do prazo de implantação",
+              "O prazo de go-live é prorrogado proporcionalmente por atrasos atribuíveis à contratante na entrega de acessos, validações e aprovações. Prorrogações precisam estar registradas para produzir efeito.")
+       + card("Anexo I §6","Escopo não incluído",
+              "Conteúdo e copywriting, integrações além dos canais contratados — inclusive plataforma de e-commerce —, infraestrutura (VPS, domínio, SSL) e custos de APIs de IA seguem fora do escopo e são orçados à parte.")
+       + '</div></section>';
+
+    h += '<footer><span>Medicine · Med Cine Editora e Filmagem Ltda — CNPJ 07.050.619/0001-50</span>'
+       + '<span class="mono">Proposta 003/2026 · Anexo I</span></footer>';
+
+    h += '</div>';
+
+    document.getElementById("root").innerHTML = h;
+    wire();
+  }
+
+  function fact(label,value,isLate){
+    return '<div><div class="fact-l">'+esc(label)+'</div>'
+         + '<div class="fact-v'+(isLate?" late":"")+' mono">'+esc(value)+'</div></div>';
+  }
+  function tile(n,label,cls){
+    return '<div class="tile '+cls+'"><div class="n">'+n+'</div><div class="l">'+esc(label)+'</div></div>';
+  }
+  function card(k,title,body){
+    return '<div class="card"><span class="k">'+esc(k)+'</span><h3>'+esc(title)+'</h3><p>'+esc(body)+'</p></div>';
+  }
+  function row(i){
+    var opts = ORDER.map(function(k){
+      return '<option value="'+k+'"'+(i.s===k?' selected':'')+'>'+STATUS[k].label+'</option>';
+    }).join("");
+    return '<div class="row s-'+i.s+'" data-n="'+i.n+'">'
+      + '<div class="num">'+String(i.n).padStart(2,"0")+'</div>'
+      + '<div><div class="ttl">'+esc(i.t)+(i.o?'<span class="tag'+(i.o.indexOf("Proposta")===0?" novo":"")+'">'+esc(i.o)+'</span>':'')+'</div>'
+      +   (i.m?'<div class="meta">'+esc(i.m)+'</div>':'')
+      + '</div>'
+      + '<div class="ctl">'
+      +   '<select class="st v-'+i.s+'" aria-label="Situação do item '+i.n+'">'+opts+'</select>'
+      +   '<input class="note" value="'+esc(i.o2||"")+'" placeholder="observação" aria-label="Observação do item '+i.n+'">'
+      + '</div></div>';
+  }
+
+  function wire(){
+    document.querySelectorAll(".row").forEach(function(el){
+      var n = Number(el.dataset.n);
+      var item = state.items.filter(function(i){ return i.n===n; })[0];
+      el.querySelector("select").addEventListener("change", function(e){
+        item.s = e.target.value;
+        render();
+        save();
+      });
+      el.querySelector("input.note").addEventListener("input", function(e){
+        item.o2 = e.target.value;
+        save();
+      });
+    });
+  }
+
+  function toast(msg,keep){
+    var t = document.getElementById("toast");
+    t.textContent = msg; t.classList.add("on");
+    if(!keep) setTimeout(function(){ t.classList.remove("on"); }, 1800);
+  }
+
+  function buildDoc(){
+    var css = document.getElementById("css").textContent;
+    var js  = document.getElementById("app").textContent;
+    var font = 'https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800'
+             + '&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap';
+    return '<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">'
+      + '<meta name="viewport" content="width=device-width,initial-scale=1">'
+      + '<title>Implantação Medicine</title>'
+      + '<link rel="stylesheet" href="'+font+'">'
+      + '<style id="css">'+css+'</style></head><body>'
+      + '<div id="root"></div><div class="saving" id="toast"></div>'
+      + '<script type="application/json" id="state">'+JSON.stringify(state)+'<\/script>'
+      + '<script id="app">'+js+'<\/script></body></html>';
+  }
+
+  function save(){
+    if(!api || readOnly) return;
+    clearTimeout(timer);
+    timer = setTimeout(function(){
+      toast("Salvando…", true);
+      api.publish(buildDoc()).then(function(){
+        toast("Salvo");
+      }).catch(function(err){
+        var code = err && err.code;
+        if(code === "conflict"){ return; }
+        if(code === "not_granted" || code === "not_writer"){
+          readOnly = true; document.body.classList.add("ro"); toast("Somente leitura");
+          return;
+        }
+        toast("Não foi possível salvar");
+      });
+    }, 700);
+  }
+
+  render();
+
+  if(window.claude && typeof window.claude.use === "function"){
+    window.claude.use("artifact").then(function(a){
+      if(a){ api = a; }
+      else { readOnly = true; document.body.classList.add("ro"); }
+    }).catch(function(){
+      readOnly = true; document.body.classList.add("ro");
+    });
+  } else {
+    readOnly = true; document.body.classList.add("ro");
+  }
+})();
+</script>
